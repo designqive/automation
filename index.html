@@ -206,6 +206,18 @@ tbody td { padding: 9px 16px; color: #374151; }
 .cl-tag.analise  { background:#d1fae5; color:#065f46; }
 .cl-tag.seguranca{ background:#fee2e2; color:#991b1b; }
 .cl-tag.infra    { background:#fef3c7; color:#92400e; }
+
+/* Dropdown nav */
+.section-dropdown { position: relative; display: flex; align-items: stretch; }
+.section-dropdown-btn { padding: 14px 20px; border: none; background: transparent; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #9ca3af; transition: all 0.2s; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
+.section-dropdown-btn::after { content: '▾'; font-size: 11px; }
+.section-dropdown-btn.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
+.section-dropdown-btn:hover { color: #1a1a2e; }
+.section-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 0 0 8px 8px; min-width: 200px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.section-dropdown:hover .section-dropdown-menu { display: block; }
+.section-dropdown-item { display: block; width: 100%; padding: 11px 18px; border: none; background: transparent; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7280; text-align: left; transition: background 0.15s; white-space: nowrap; }
+.section-dropdown-item:hover { background: #f9fafb; color: #1a1a2e; }
+.section-dropdown-item.active { color: #1a1a2e; font-weight: 700; background: #f3f4f6; }
 </style>
 </head>
 <body>
@@ -252,17 +264,22 @@ tbody td { padding: 9px 16px; color: #374151; }
 
 <div class="section-bar">
   <button class="section-btn active" onclick="switchSection('exec',this)">Sumário Executivo</button>
-  <button class="section-btn" onclick="switchSection('funil',this)">Funil</button>
-  <button class="section-btn" onclick="switchSection('ttfv',this)">TTFV</button>
+  <button class="section-btn" onclick="switchSection('funil',this)">Adoção</button>
   <button class="section-btn" onclick="switchSection('eng',this)">Engajamento</button>
-  <button class="section-btn" onclick="switchSection('receita',this)">Receita (MRR)</button>
-  <button class="section-btn" onclick="switchSection('quadrant',this)">Quadrante</button>
-  <button class="section-btn" onclick="switchSection('gap',this)">Gap de Cobrança</button>
-  <button class="section-btn" onclick="switchSection('score',this)">Score CS</button>
-  <button class="section-btn" onclick="switchSection('sim',this)">Simulador</button>
-  <button class="section-btn" onclick="switchSection('regras',this)">Análise de Regras</button>
+  <button class="section-btn" onclick="switchSection('receita',this)">Receita</button>
   <button class="section-btn" onclick="switchSection('expansao',this)">Expansão</button>
-  <button class="section-btn" onclick="switchSection('gdp',this)">Potencial GdP</button>
+  <div class="section-dropdown" id="dropdown-acessorias">
+    <button class="section-dropdown-btn" id="dropdown-acessorias-btn">Análises acessórias</button>
+    <div class="section-dropdown-menu">
+      <button class="section-dropdown-item" onclick="switchSection('ttfv',this)">TTFV</button>
+      <button class="section-dropdown-item" onclick="switchSection('quadrant',this)">Quadrante</button>
+      <button class="section-dropdown-item" onclick="switchSection('gap',this)">GAP de Cobrança</button>
+      <button class="section-dropdown-item" onclick="switchSection('score',this)">Score CS</button>
+      <button class="section-dropdown-item" onclick="switchSection('sim',this)">Simulador</button>
+      <button class="section-dropdown-item" onclick="switchSection('regras',this)">Análise de Regras</button>
+      <button class="section-dropdown-item" onclick="switchSection('gdp',this)">Potencial GdP</button>
+    </div>
+  </div>
 </div>
 
 <!-- ═══════════════ SUMÁRIO EXECUTIVO ═══════════════ -->
@@ -1678,11 +1695,20 @@ function renderFunilReceita() {
 }
 
 // ===================== NAVIGATION =====================
+const DROPDOWN_SECTIONS = ['ttfv','quadrant','gap','score','sim','regras','gdp'];
 function switchSection(id, btn) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.section-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section-dropdown-item').forEach(b=>b.classList.remove('active'));
   document.getElementById('section-'+id).classList.add('active');
-  btn.classList.add('active');
+  const dropBtn = document.getElementById('dropdown-acessorias-btn');
+  if (DROPDOWN_SECTIONS.includes(id)) {
+    btn.classList.add('active');
+    dropBtn.classList.add('active');
+  } else {
+    btn.classList.add('active');
+    dropBtn.classList.remove('active');
+  }
   if (id === 'expansao') setTimeout(function(){ if(typeof initExpansaoCharts==='function') initExpansaoCharts(); }, 50);
   if (id === 'quadrant') setTimeout(function(){ if(typeof renderQdTable==='function') renderQdTable(); }, 50);
 }
