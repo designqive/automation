@@ -1647,6 +1647,7 @@ tbody td { padding: 9px 16px; color: #374151; }
           <button class="filter-btn" onclick="contasSetFilter('acao','Reativar',this)">Reativar</button>
           <button class="filter-btn" onclick="contasSetFilter('acao','Converter para pagamento',this)">Converter</button>
           <button class="filter-btn" onclick="contasSetFilter('acao','Manter e expandir',this)">Manter</button>
+          <button class="filter-btn" onclick="contasSetFilter('acao','Expandir tier',this)">Expandir tier</button>
         </div>
       </div>
       <div>
@@ -1676,10 +1677,10 @@ tbody td { padding: 9px 16px; color: #374151; }
               <th onclick="contasSort('t')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">TTFV <span id="sort-t"></span></th>
               <th onclick="contasSort('m')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">MRR Auto <span id="sort-m"></span></th>
               <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">
-                Tier <span title="Tier contratado em Mai/26. 🔴 indica uso acima do limite do tier — candidata a expansão." style="font-size:10px;color:#9ca3af;cursor:help;font-weight:400;text-transform:none;letter-spacing:0">ⓘ</span>
+                Tier <i class="info-icon sm" onmouseenter="showTip(this,'Tier contratado em Mai/26.<br>⚠ indica uso acima do limite — candidata a expansão de plano.')" onmouseleave="hideTip()">ℹ</i>
               </th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">
-                USO <span title="Histórico de execuções dos últimos 6 meses (Dez/25–Mai/26). Cada ponto representa um mês: ⚪ Inativo · 🟡 Baixo (1–99) · 🟠 Médio (100–999) · 🔴 Alto (1.000+)" style="font-size:10px;color:#9ca3af;cursor:help;font-weight:400;text-transform:none;letter-spacing:0">ⓘ</span>
+                USO <i class="info-icon sm" onmouseenter="showTip(this,'Histórico de execuções dos últimos 6 meses (Dez/25–Mai/26).<br>Cada ponto = 1 mês:<br>⚫ Inativo &nbsp;·&nbsp; 🟡 Baixo (1–99)<br>🟠 Médio (100–999) &nbsp;·&nbsp; 🔴 Alto (1.000+)')" onmouseleave="hideTip()">ℹ</i>
               </th>
               <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Ação sugerida</th>
             </tr>
@@ -4355,7 +4356,7 @@ function contasRender() {
   const dotLabels = ['Inativo','Baixo (1–99)','Médio (100–999)','Alto (1.000+)'];
   const SPARK_MONTHS = ['Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'];
   const sparkline = d => d.split('').map((v,i)=>
-    `<span title="${SPARK_MONTHS[i]}: ${dotLabels[+v]}" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColors[+v]};margin:0 1px;cursor:default"></span>`
+    `<span onmouseenter="showTip(this,'${SPARK_MONTHS[i]}: <b>${dotLabels[+v]}</b>')" onmouseleave="hideTip()" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColors[+v]};margin:0 1px;cursor:default"></span>`
   ).join('');
   const tendColor = t => t==='↑'?'#059669':t==='↓'?'#dc2626':'#9ca3af';
 
