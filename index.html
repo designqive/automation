@@ -1310,107 +1310,121 @@ tbody td { padding: 9px 16px; color: #374151; }
 </div>
 
 <!-- ═══════════════ POTENCIAL GdP ═══════════════ -->
-<div class="panel" id="section-gdp">
-  <h2 class="section-title">Potencial GdP — Automações</h2>
+<div class="panel" id="section-gdp" class="panel">
+  <div class="content">
 
-  <!-- KPIs -->
-  <div class="kpi-row kpi-row-5" style="margin-bottom:24px">
-    <div class="kpi" style="border-left:4px solid #2563eb">
-      <div class="kpi-label">GdP Ativos (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-ativos'])" onmouseleave="hideTip()">ℹ</i></div>
-      <div class="kpi-value" style="color:#2563eb">1.297</div>
-      <div class="kpi-sub">assinantes ativos de Gestão de Pagamentos</div>
-    </div>
-    <div class="kpi" style="border-left:4px solid #7c3aed">
-      <div class="kpi-label">Com Automações Criadas <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-criadas'])" onmouseleave="hideTip()">ℹ</i></div>
-      <div class="kpi-value" style="color:#7c3aed">262</div>
-      <div class="kpi-sub">20,2% da base GdP</div>
-      <span class="badge" style="background:#f5f3ff;color:#7c3aed">79,8% nunca ativaram</span>
-    </div>
-    <div class="kpi" style="border-left:4px solid #dc2626">
-      <div class="kpi-label">GAP Qualificado <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-gap'])" onmouseleave="hideTip()">ℹ</i></div>
-      <div class="kpi-value" style="color:#dc2626">167</div>
-      <div class="kpi-sub">usam Automações mas não pagam</div>
-      <span class="badge badge-orange">180k execuções/mês</span>
-    </div>
-    <div class="kpi" style="border-left:4px solid #059669">
-      <div class="kpi-label">Já Convertidos <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-convertidos'])" onmouseleave="hideTip()">ℹ</i></div>
-      <div class="kpi-value" style="color:#059669">61</div>
-      <div class="kpi-sub">pagam GdP + Automações</div>
-      <span class="badge badge-up">4,7% conversão</span>
-    </div>
-    <div class="kpi" style="border-left:4px solid #f59e0b">
-      <div class="kpi-label">Nunca Ativaram <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-nunca'])" onmouseleave="hideTip()">ℹ</i></div>
-      <div class="kpi-value" style="color:#f59e0b">1.035</div>
-      <div class="kpi-sub">R$ 404k MRR GdP sem automação</div>
-      <span class="badge badge-orange">oportunidade de ativação</span>
-    </div>
-  </div>
-
-  <!-- Funil + Segmento -->
-  <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:24px">
-    <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)">
-      <div style="font-weight:600;font-size:14px;color:#1e293b;margin-bottom:16px">Funil de Adoção — Base GdP</div>
-      <canvas id="gdp-funnel-chart" height="200"></canvas>
-    </div>
-    <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)">
-      <div style="font-weight:600;font-size:14px;color:#1e293b;margin-bottom:16px">GAP por Segmento</div>
-      <canvas id="gdp-seg-chart" height="200"></canvas>
-    </div>
-  </div>
-
-  <!-- Abandonaram -->
-  <div style="background:#fffbeb;border:1px solid #fcd34d;border-radius:10px;padding:14px 18px;margin-bottom:20px;display:flex;align-items:center;gap:12px">
-    <span style="font-size:20px">⚠️</span>
-    <div>
-      <span style="font-weight:600;color:#92400e">53 contas criaram automações mas não executaram em Mai/26</span>
-      <span style="color:#78350f;font-size:13px;margin-left:8px">— candidatas a reativação, MRR GdP: R$ 30,8k</span>
-    </div>
-  </div>
-
-  <!-- Tabela GAP -->
-  <div style="background:#fff;border-radius:12px;padding:20px;box-shadow:0 1px 4px rgba(0,0,0,.08)">
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px">
-      <div style="font-weight:600;font-size:14px;color:#1e293b">Contas GdP — Funil de Adoção</div>
-      <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
-        <select id="gdp-etapa-filter" onchange="gdpPage=1;gdpRenderTable()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px;color:#374151">
-          <option value="">Todas as etapas</option>
-          <option value="Já paga Automações">Já paga Automações</option>
-          <option value="GAP — usa/não paga">GAP — usa/não paga</option>
-          <option value="Criou mas não usa">Criou mas não usa</option>
-          <option value="Nunca ativou">Nunca ativou</option>
-        </select>
-        <select id="gdp-seg-filter" onchange="gdpPage=1;gdpRenderTable()" style="padding:6px 10px;border:1px solid #e2e8f0;border-radius:6px;font-size:13px;color:#374151">
-          <option value="">Todos segmentos</option>
-          <option value="SMB">SMB</option>
-          <option value="MID">MID</option>
-          <option value="Enterprise">Enterprise</option>
-        </select>
-        <span id="gdp-count-label" style="font-size:12px;color:#6b7280"></span>
+    <!-- KPIs -->
+    <div class="kpi-row kpi-row-5" style="margin-bottom:24px">
+      <div class="kpi" style="border-left:4px solid #2563eb">
+        <div class="kpi-label">GdP Ativos (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-ativos'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="kpi-value" style="color:#2563eb">1.297</div>
+        <div class="kpi-sub">assinantes ativos de Gestão de Pagamentos</div>
+      </div>
+      <div class="kpi" style="border-left:4px solid #7c3aed">
+        <div class="kpi-label">Com Automações Criadas <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-criadas'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="kpi-value" style="color:#7c3aed">262</div>
+        <div class="kpi-sub">20,2% da base GdP</div>
+        <span class="badge" style="background:#f5f3ff;color:#7c3aed">79,8% nunca ativaram</span>
+      </div>
+      <div class="kpi" style="border-left:4px solid #dc2626">
+        <div class="kpi-label">GAP Qualificado <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-gap'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="kpi-value" style="color:#dc2626">167</div>
+        <div class="kpi-sub">usam Automações mas não pagam</div>
+        <span class="badge badge-orange">180k execuções/mês</span>
+      </div>
+      <div class="kpi" style="border-left:4px solid #059669">
+        <div class="kpi-label">Já Convertidos <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-convertidos'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="kpi-value" style="color:#059669">61</div>
+        <div class="kpi-sub">pagam GdP + Automações</div>
+        <span class="badge badge-up">4,7% conversão</span>
+      </div>
+      <div class="kpi" style="border-left:4px solid #f59e0b">
+        <div class="kpi-label">Nunca Ativaram <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-nunca'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="kpi-value" style="color:#f59e0b">1.035</div>
+        <div class="kpi-sub">R$ 404k MRR GdP sem automação</div>
+        <span class="badge badge-orange">oportunidade de ativação</span>
       </div>
     </div>
-    <div style="overflow-x:auto">
-      <table style="width:100%;border-collapse:collapse" id="gdp-gap-table">
-        <thead>
-          <tr style="background:#fef2f2">
-            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">#</th>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">Conta</th>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">Etapa do Funil</th>
-            <th style="padding:8px 12px;text-align:left;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">Segmento</th>
-            <th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">MRR GdP</th>
-            <th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">Execuções</th>
-            <th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">Regras</th>
-            <th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">MRR Pot. Auto</th>
-            <th style="padding:8px 12px;text-align:right;font-size:11px;font-weight:600;color:#9ca3af;text-transform:uppercase;border-bottom:2px solid #fee2e2">Margem</th>
-          </tr>
-        </thead>
-        <tbody id="gdp-gap-tbody"></tbody>
-      </table>
+
+    <!-- Charts row -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
+      <div class="chart-card">
+        <div class="chart-title">Funil de Adoção — Base GdP <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-ativos'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="chart-sub">Jornada de adoção de Automações dentro dos 1.297 assinantes ativos GdP · Mai/2026</div>
+        <canvas id="gdp-funnel-chart" style="max-height:220px"></canvas>
+      </div>
+      <div class="chart-card">
+        <div class="chart-title">GAP por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-gap'])" onmouseleave="hideTip()">ℹ</i></div>
+        <div class="chart-sub">Contas usando Automações sem cobrança, por segmento · Mai/2026</div>
+        <canvas id="gdp-seg-chart" style="max-height:220px"></canvas>
+      </div>
     </div>
-    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:12px">
-      <button id="gdp-prev" onclick="gdpPrevPage()" style="padding:6px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">← Anterior</button>
-      <span id="gdp-page-label" style="font-size:13px;color:#6b7280"></span>
-      <button id="gdp-next" onclick="gdpNextPage()" style="padding:6px 14px;border:1px solid #e2e8f0;border-radius:6px;background:#fff;cursor:pointer;font-size:13px">Próximo →</button>
+
+    <!-- Alerta reativação -->
+    <div class="insight-note" style="margin-bottom:20px;display:flex;align-items:center;gap:12px;background:#fffbeb;border-left-color:#f59e0b">
+      <span style="font-size:18px;flex-shrink:0">⚠️</span>
+      <div>
+        <strong>53 contas criaram automações mas não executaram em Mai/26</strong>
+        <span style="color:#78350f;font-size:12px;margin-left:6px">— candidatas a reativação · MRR GdP: R$ 30,8k</span>
+      </div>
     </div>
+
+    <!-- Tabela GAP -->
+    <div class="chart-card" style="padding:0;overflow:hidden">
+      <div style="padding:16px 20px 14px;border-bottom:1px solid #f3f4f6">
+        <div style="display:flex;align-items:flex-start;justify-content:space-between;flex-wrap:wrap;gap:12px">
+          <div>
+            <div class="chart-title" style="margin-bottom:2px">Contas GdP — Funil de Adoção <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-gap'])" onmouseleave="hideTip()">ℹ</i></div>
+            <div class="chart-sub">Base completa de 1.297 contas GdP com sua etapa de adoção de Automações</div>
+          </div>
+          <span id="gdp-page-label" style="font-size:12px;color:#9ca3af;white-space:nowrap;padding-top:2px"></span>
+        </div>
+        <div style="margin-top:12px;display:flex;gap:24px;flex-wrap:wrap">
+          <div>
+            <div class="filter-label">Etapa do Funil</div>
+            <div class="table-filter" id="gdp-etapa-filters">
+              <button class="filter-btn active" onclick="gdpSetEtapa('',this)">Todas</button>
+              <button class="filter-btn" onclick="gdpSetEtapa('Já paga Automações',this)">Já paga</button>
+              <button class="filter-btn" onclick="gdpSetEtapa('GAP — usa/não paga',this)">GAP</button>
+              <button class="filter-btn" onclick="gdpSetEtapa('Criou mas não usa',this)">Criou/não usa</button>
+              <button class="filter-btn" onclick="gdpSetEtapa('Nunca ativou',this)">Nunca ativou</button>
+            </div>
+          </div>
+          <div>
+            <div class="filter-label">Segmento</div>
+            <div class="table-filter" id="gdp-seg-filters">
+              <button class="filter-btn active" onclick="gdpSetSeg('',this)">Todos</button>
+              <button class="filter-btn" onclick="gdpSetSeg('SMB',this)">SMB</button>
+              <button class="filter-btn" onclick="gdpSetSeg('MID',this)">MID</button>
+              <button class="filter-btn" onclick="gdpSetSeg('Enterprise',this)">Enterprise</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse" id="gdp-gap-table">
+          <thead>
+            <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">#</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Conta</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Etapa do Funil</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Segmento</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">MRR GdP</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Execuções</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Regras</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">MRR Pot. Auto</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Margem</th>
+            </tr>
+          </thead>
+          <tbody id="gdp-gap-tbody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e5e7eb;background:#fafafa;gap:8px">
+        <button id="gdp-prev" onclick="gdpPrevPage()" style="padding:5px 14px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#374151;font-size:12px;cursor:pointer;font-weight:500">← Anterior</button>
+        <button id="gdp-next" onclick="gdpNextPage()" style="padding:5px 14px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#374151;font-size:12px;cursor:pointer;font-weight:500">Próxima →</button>
+      </div>
+    </div>
+
   </div>
 </div>
 <!-- ═══════════════ FIM POTENCIAL GdP ═══════════════ -->
@@ -3390,10 +3404,27 @@ window.GDP_GAP = [{"id": 17164, "seg": "SMB", "mrr_gdp": 1236.92, "exec": 8040, 
 let gdpPage = 1;
 const GDP_PER_PAGE = 20;
 
+let gdpActiveSeg = '';
+let gdpActiveEtapa = '';
+
+function gdpSetSeg(val, btn) {
+  gdpActiveSeg = val;
+  document.querySelectorAll('#gdp-seg-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  gdpPage = 1;
+  gdpRenderTable();
+}
+
+function gdpSetEtapa(val, btn) {
+  gdpActiveEtapa = val;
+  document.querySelectorAll('#gdp-etapa-filters .filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  gdpPage = 1;
+  gdpRenderTable();
+}
+
 function gdpFilteredRows() {
-  const seg = document.getElementById('gdp-seg-filter').value;
-  const etapa = document.getElementById('gdp-etapa-filter').value;
-  return GDP_GAP.filter(r => (!seg || r.seg === seg) && (!etapa || r.etapa === etapa));
+  return GDP_GAP.filter(r => (!gdpActiveSeg || r.seg === gdpActiveSeg) && (!gdpActiveEtapa || r.etapa === gdpActiveEtapa));
 }
 
 function gdpRenderTable() {
@@ -3433,7 +3464,6 @@ function gdpRenderTable() {
   });
   document.getElementById('gdp-gap-tbody').innerHTML = html;
   document.getElementById('gdp-page-label').textContent = `Página ${gdpPage} de ${total} · ${rows.length} contas`;
-  document.getElementById('gdp-count-label').textContent = `${rows.length} contas`;
   document.getElementById('gdp-prev').disabled = gdpPage === 1;
   document.getElementById('gdp-next').disabled = gdpPage === total || total === 0;
 }
