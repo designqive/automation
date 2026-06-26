@@ -520,32 +520,39 @@ tbody td { padding: 9px 16px; color: #374151; }
 
 <!-- ═══════════════ ENGAJAMENTO ═══════════════ -->
 <div id="section-eng" class="panel">
+  <div class="tabs">
+    <button class="tab active" id="eng-tab-Total" onclick="engSetSeg('Total',this)">Total</button>
+    <button class="tab" id="eng-tab-Velocity" onclick="engSetSeg('Velocity',this)">Velocity</button>
+    <button class="tab" id="eng-tab-Mid Market" onclick="engSetSeg('Mid Market',this)">Mid Market</button>
+    <button class="tab" id="eng-tab-Enterprise" onclick="engSetSeg('Enterprise',this)">Enterprise</button>
+    <button class="tab" id="eng-tab-Contador" onclick="engSetSeg('Contador',this)">Contador</button>
+  </div>
   <div class="content">
 
-    <div class="kpi-row kpi-auto" style="margin-bottom:20px">
+    <div class="kpi-row kpi-row-5" style="margin-bottom:20px">
       <div class="kpi" style="border-left:4px solid #1d4ed8">
         <div class="kpi-label">MAA (Mai/26)</div>
-        <div class="kpi-value" style="color:#1d4ed8">1.545</div>
+        <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-maa">1.545</div>
         <div class="kpi-sub">contas com ações no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
         <div class="kpi-label">Execuções (Mai/26)</div>
-        <div class="kpi-value" style="color:#1d4ed8">3,2M</div>
+        <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-exec">3,2M</div>
         <div class="kpi-sub">ações disparadas no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
         <div class="kpi-label">Regras Ativas (Mai/26)</div>
-        <div class="kpi-value" style="color:#16a34a">6.485</div>
+        <div class="kpi-value" style="color:#16a34a" id="eng-kpi-regras">6.485</div>
         <div class="kpi-sub">dispararam ações no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
         <div class="kpi-label">Média Exec/Conta (Mai/26)</div>
-        <div class="kpi-value" style="color:#16a34a">2.099</div>
-        <div class="kpi-sub">média mensal: exec ÷ MAA no mês</div>
+        <div class="kpi-value" style="color:#16a34a" id="eng-kpi-avg">2.099</div>
+        <div class="kpi-sub">exec ÷ MAA no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
         <div class="kpi-label">Novas Adoções (Mai/26)</div>
-        <div class="kpi-value" style="color:#d97706">50</div>
+        <div class="kpi-value" style="color:#d97706" id="eng-kpi-novas">50</div>
         <div class="kpi-sub">1ª ação disparada no mês</div>
       </div>
     </div>
@@ -1606,6 +1613,7 @@ const ENG = {
   regras:[3797,3896,3890,4072,4218,4330,4590,4703,4821,5054,5162,5140,5493,5931,6362,6575,6485],
   novas: [0,52,47,43,51,71,62,60,60,68,45,34,53,59,48,50,50]
 };
+const ENG_SEG = {"Velocity": {"maa": [683, 707, 717, 748, 779, 815, 850, 872, 894, 938, 953, 957, 974, 1024, 1041, 1061, 1083], "exec": [475092, 463773, 491593, 514269, 548448, 536506, 619087, 631406, 621192, 1049825, 1604260, 1254088, 1278940, 1218787, 1528138, 1584004, 1526415], "regras": [2418, 2483, 2504, 2626, 2730, 2769, 2902, 2958, 3030, 3218, 3233, 3123, 3400, 3674, 3895, 4070, 3998], "novas": [0, 38, 30, 35, 33, 47, 35, 35, 39, 50, 29, 22, 35, 42, 26, 34, 41]}, "Mid Market": {"maa": [97, 101, 103, 106, 108, 118, 120, 130, 132, 140, 142, 147, 155, 163, 166, 180, 172], "exec": [59080, 62325, 67478, 67004, 73797, 84520, 99662, 99299, 102822, 105010, 99910, 93740, 96049, 100056, 153686, 175979, 209023], "regras": [273, 284, 286, 306, 330, 372, 411, 423, 441, 474, 500, 543, 589, 597, 639, 666, 650], "novas": [0, 5, 7, 2, 4, 9, 6, 10, 6, 10, 5, 6, 9, 7, 7, 9, 3]}, "Enterprise": {"maa": [101, 106, 107, 109, 120, 130, 142, 142, 145, 151, 156, 159, 165, 171, 180, 179, 185], "exec": [565462, 523030, 579531, 562311, 638954, 633031, 718844, 756877, 795587, 816186, 803697, 715565, 721412, 659368, 869874, 851121, 870348], "regras": [875, 896, 866, 890, 907, 939, 998, 1010, 1026, 1034, 1099, 1133, 1148, 1285, 1447, 1450, 1456], "novas": [0, 5, 3, 4, 10, 14, 15, 6, 7, 5, 8, 5, 6, 4, 8, 3, 5]}, "Contador": {"maa": [65, 64, 70, 72, 72, 73, 76, 88, 88, 90, 90, 91, 95, 97, 99, 104, 99], "exec": [38240, 36288, 52250, 33448, 51564, 32305, 49223, 143490, 246665, 267483, 434763, 402382, 417701, 448554, 527617, 558651, 634429], "regras": [221, 218, 219, 235, 236, 234, 265, 295, 307, 309, 313, 324, 332, 348, 354, 361, 349], "novas": [0, 3, 7, 2, 4, 1, 6, 9, 7, 3, 3, 1, 3, 6, 7, 4, 1]}};
 
 ;
 
@@ -3547,6 +3555,36 @@ gdpRenderTable();
     else if(e.key === 'Escape') pinClear();
   });
 })();
+
+// ═══ ENGAJAMENTO SEGMENTADO ═══
+let _engCharts = {};
+function engSetSeg(seg, btn) {
+  document.querySelectorAll('.tabs .tab').forEach(b => { if(b.id && b.id.startsWith('eng-tab-')) b.classList.remove('active'); });
+  btn.classList.add('active');
+  const d = seg === 'Total' ? ENG : ENG_SEG[seg];
+  const color = {Velocity:'#1d4ed8','Mid Market':'#15803d',Enterprise:'#b91c1c',Contador:'#c2410c',Total:'#1d4ed8'}[seg] || '#1d4ed8';
+  const maa = d.maa[d.maa.length-1];
+  const exc = d.exec[d.exec.length-1];
+  const reg = d.regras[d.regras.length-1];
+  const nov = d.novas[d.novas.length-1];
+  const avg = maa ? Math.round(exc/maa) : 0;
+  const fmt = n => n >= 1e6 ? (n/1e6).toFixed(1)+'M' : n.toLocaleString('pt-BR');
+  document.getElementById('eng-kpi-maa').textContent = maa.toLocaleString('pt-BR');
+  document.getElementById('eng-kpi-exec').textContent = fmt(exc);
+  document.getElementById('eng-kpi-regras').textContent = reg.toLocaleString('pt-BR');
+  document.getElementById('eng-kpi-avg').textContent = avg.toLocaleString('pt-BR');
+  document.getElementById('eng-kpi-novas').textContent = nov.toLocaleString('pt-BR');
+  const charts = [
+    {id:'eng-maa', type:'line', metric:'maa', ds: ch => [lineDs('MAA', d.maa, color, true)], opts:{plugins:{legend:{display:false}}}},
+    {id:'eng-exec', type:'bar', metric:'exec', ds: ch => [barDs('Execuções', d.exec, color)], opts:{plugins:{legend:{display:false}},scales:{y:{ticks:{color:'#9ca3af',callback:v=>(v/1e6).toFixed(1)+'M'}}}}},
+    {id:'eng-regras', type:'line', metric:'regras', ds: ch => [lineDs('Regras', d.regras, color, true)], opts:{plugins:{legend:{display:false}}}},
+    {id:'eng-novas', type:'bar', metric:'novas', ds: ch => [barDs('Novas', d.novas, '#d97706')], opts:{plugins:{legend:{display:false}}}},
+  ];
+  charts.forEach(({id, type, ds, opts}) => {
+    if (_engCharts[id]) { _engCharts[id].destroy(); }
+    _engCharts[id] = mkChart(id, type, ENG.meses, ds(), opts);
+  });
+}
 
 // ═══ CHANGELOG ═══
 function openChangelog() {
