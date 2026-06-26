@@ -4425,7 +4425,7 @@ function openContaDrawer(id) {
   document.getElementById('drawer-regras-sub').textContent = a.ra === a.r ? 'todas ativas' : (a.r - a.ra) + ' inativa(s)';
   document.getElementById('drawer-exec').textContent = a.x > 0 ? a.x.toLocaleString('pt-BR') : '—';
   const tendEl = document.getElementById('drawer-tend');
-  const tendColor = {↑:'#059669',↓:'#dc2626','→':'#9ca3af'};
+  const tendColor = {'↑':'#059669','↓':'#dc2626','→':'#9ca3af'};
   tendEl.innerHTML = a.td ? `<span style="color:${tendColor[a.td]};font-weight:700">${a.td}</span> vs Abr/26` : '';
   document.getElementById('drawer-quad').textContent = a.q || '—';
   document.getElementById('drawer-etapa').textContent = a.e;
