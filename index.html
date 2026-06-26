@@ -136,13 +136,118 @@ tbody td { padding: 9px 16px; color: #374151; }
   .funnel-bar-wrap { height: 100px; }
   .funnel-val { font-size: 12px; top: -22px; }
 }
+
+/* PIN screen */
+#pin-screen {
+  position: fixed; inset: 0; background: #1a1a2e; z-index: 99999;
+  display: flex; align-items: center; justify-content: center;
+  flex-direction: column; gap: 0;
+}
+#pin-screen.hidden { display: none; }
+.pin-card {
+  background: #fff; border-radius: 16px; padding: 40px 48px;
+  display: flex; flex-direction: column; align-items: center; gap: 24px;
+  box-shadow: 0 24px 64px rgba(0,0,0,.35); width: min(400px, 90vw);
+}
+.pin-logo { font-size: 13px; font-weight: 700; letter-spacing: .05em; color: #6b7280; text-transform: uppercase; }
+.pin-title { font-size: 18px; font-weight: 700; color: #1a1a2e; text-align: center; line-height: 1.3; }
+.pin-subtitle { font-size: 13px; color: #9ca3af; text-align: center; margin-top: -12px; }
+.pin-dots { display: flex; gap: 12px; }
+.pin-dot {
+  width: 14px; height: 14px; border-radius: 50%;
+  background: #e5e7eb; transition: background .15s, transform .15s;
+}
+.pin-dot.filled { background: #1a1a2e; transform: scale(1.1); }
+.pin-dot.error { background: #dc2626; }
+.pin-keypad { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; width: 100%; }
+.pin-key {
+  border: none; border-radius: 10px; background: #f3f4f6; color: #1a1a2e;
+  font-size: 18px; font-weight: 600; height: 52px; cursor: pointer;
+  transition: background .12s, transform .08s; -webkit-tap-highlight-color: transparent;
+}
+.pin-key:hover { background: #e5e7eb; }
+.pin-key:active { background: #d1d5db; transform: scale(.96); }
+.pin-key.del { font-size: 14px; color: #6b7280; }
+.pin-error-msg { font-size: 12px; color: #dc2626; font-weight: 600; min-height: 16px; text-align: center; }
+@keyframes pin-shake {
+  0%,100%{transform:translateX(0)} 20%{transform:translateX(-6px)} 40%{transform:translateX(6px)}
+  60%{transform:translateX(-4px)} 80%{transform:translateX(4px)}
+}
+.pin-shake { animation: pin-shake .35s ease; }
+
+
+/* Version badge */
+.version-badge { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); color: rgba(255,255,255,0.6); border-radius: 6px; padding: 4px 10px; font-size: 11px; font-weight: 600; cursor: pointer; transition: all .15s; letter-spacing: .03em; }
+.version-badge:hover { background: rgba(255,255,255,0.15); color: #fff; }
+
+/* Changelog modal */
+#changelog-modal { display:none; position:fixed; inset:0; background:rgba(0,0,0,.45); z-index:20000; align-items:center; justify-content:center; }
+#changelog-modal.open { display:flex; }
+.changelog-card { background:#fff; border-radius:16px; width:min(680px,92vw); max-height:82vh; overflow-y:auto; box-shadow:0 20px 60px rgba(0,0,0,.2); }
+.changelog-header { padding:24px 28px 16px; border-bottom:1px solid #f3f4f6; display:flex; align-items:center; justify-content:space-between; position:sticky; top:0; background:#fff; z-index:1; }
+.changelog-header h2 { font-size:16px; font-weight:700; color:#1a1a2e; }
+.changelog-header p { font-size:12px; color:#9ca3af; margin-top:2px; }
+.changelog-close { background:none; border:none; font-size:20px; color:#9ca3af; cursor:pointer; line-height:1; padding:4px; }
+.changelog-close:hover { color:#1a1a2e; }
+.changelog-body { padding:20px 28px 28px; display:flex; flex-direction:column; gap:20px; }
+.cl-entry { display:flex; gap:16px; }
+.cl-version-col { display:flex; flex-direction:column; align-items:center; gap:0; flex-shrink:0; width:48px; }
+.cl-vbadge { background:#1a1a2e; color:#fff; border-radius:6px; padding:3px 7px; font-size:10px; font-weight:700; white-space:nowrap; }
+.cl-line { width:2px; background:#e5e7eb; flex:1; margin-top:4px; min-height:20px; }
+.cl-content { flex:1; padding-bottom:4px; }
+.cl-meta { display:flex; align-items:center; gap:8px; margin-bottom:8px; flex-wrap:wrap; }
+.cl-date { font-size:11px; color:#9ca3af; }
+.cl-author { font-size:11px; color:#6b7280; font-weight:600; background:#f3f4f6; border-radius:4px; padding:1px 7px; }
+.cl-changes { display:flex; flex-direction:column; gap:5px; }
+.cl-change { display:flex; align-items:flex-start; gap:8px; font-size:12px; color:#374151; line-height:1.45; }
+.cl-tag { font-size:9px; font-weight:700; border-radius:4px; padding:2px 6px; white-space:nowrap; flex-shrink:0; margin-top:1px; text-transform:uppercase; letter-spacing:.04em; }
+.cl-tag.dados    { background:#dbeafe; color:#1d4ed8; }
+.cl-tag.ux       { background:#f3e8ff; color:#7c3aed; }
+.cl-tag.analise  { background:#d1fae5; color:#065f46; }
+.cl-tag.seguranca{ background:#fee2e2; color:#991b1b; }
+.cl-tag.infra    { background:#fef3c7; color:#92400e; }
 </style>
 </head>
 <body>
 
+<div id="pin-screen">
+  <div class="pin-card" id="pin-card">
+    <div class="pin-logo">Qive · Automações</div>
+    <div class="pin-title">Dashboard de Automações</div>
+    <div class="pin-subtitle">Insira o código de 6 dígitos para continuar</div>
+    <div class="pin-dots" id="pin-dots">
+      <div class="pin-dot" id="pd0"></div>
+      <div class="pin-dot" id="pd1"></div>
+      <div class="pin-dot" id="pd2"></div>
+      <div class="pin-dot" id="pd3"></div>
+      <div class="pin-dot" id="pd4"></div>
+      <div class="pin-dot" id="pd5"></div>
+    </div>
+    <div class="pin-keypad">
+      <button class="pin-key" onclick="pinPress('1')">1</button>
+      <button class="pin-key" onclick="pinPress('2')">2</button>
+      <button class="pin-key" onclick="pinPress('3')">3</button>
+      <button class="pin-key" onclick="pinPress('4')">4</button>
+      <button class="pin-key" onclick="pinPress('5')">5</button>
+      <button class="pin-key" onclick="pinPress('6')">6</button>
+      <button class="pin-key" onclick="pinPress('7')">7</button>
+      <button class="pin-key" onclick="pinPress('8')">8</button>
+      <button class="pin-key" onclick="pinPress('9')">9</button>
+      <button class="pin-key del" onclick="pinClear()">Limpar</button>
+      <button class="pin-key" onclick="pinPress('0')">0</button>
+      <button class="pin-key del" onclick="pinBackspace()">⌫</button>
+    </div>
+    <div class="pin-error-msg" id="pin-error"></div>
+  </div>
+</div>
+
+
 <header>
-  <h1>📊 Dashboard — Automações</h1>
-  <span>Jan/2025 – Mai/2026</span>
+  <h1>Automações · Performance</h1>
+  <div style="display:flex;align-items:center;gap:12px">
+    <span style="font-size:13px;opacity:.7">Jan/2025 – Mai/2026</span>
+    <button class="version-badge" onclick="openChangelog()">v1.9</button>
+  </div>
 </header>
 
 <div class="section-bar">
@@ -1311,6 +1416,144 @@ tbody td { padding: 9px 16px; color: #374151; }
   </div>
 </div>
 <!-- ═══════════════ FIM POTENCIAL GdP ═══════════════ -->
+
+
+<!-- ══════════════ CHANGELOG MODAL ══════════════ -->
+<div id="changelog-modal" onclick="if(event.target===this)closeChangelog()">
+  <div class="changelog-card">
+    <div class="changelog-header">
+      <div>
+        <h2>Changelog</h2>
+        <p>Histórico de versões do dashboard</p>
+      </div>
+      <button class="changelog-close" onclick="closeChangelog()">✕</button>
+    </div>
+    <div class="changelog-body">
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.9</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">25/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag seguranca">Segurança</span>Tela de PIN com validação SHA-256 — acesso protegido por código de 6 dígitos com sessão persistente</div>
+            <div class="cl-change"><span class="cl-tag infra">Infra</span>Changelog implementado — histórico de versões acessível pelo badge de versão na barra superior</div>
+            <div class="cl-change"><span class="cl-tag infra">Infra</span>Script de publicação no GitHub Pages configurado para o repositório designqive/automation</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.8</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">25/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Potencial GdP — funil de adoção de Automações dentro da base de 1.297 assinantes ativos de Gestão de Pagamentos</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>GAP qualificado GdP: 167 contas usando sem pagar (180k exec/mês), 61 já convertidas, 1.035 nunca ativaram</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Tabela com 1.297 contas GdP e etapa do funil por badge colorido — filtros por etapa e segmento</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.7</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">25/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Custo de servir: custo absorvido sem receita = R$5.064/mês (2,6M execuções × R$0,00195867)</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Margem líquida potencial: R$80,9k (94,1%) após cobrir custo de execução das 518 contas do GAP</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Score CS recalibrado — pondera Margem Líquida (40%) no lugar de MRR bruto, priorizando contas com melhor custo-benefício</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Colunas Custo Atual e Margem adicionadas à tabela do GAP de Cobrança</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.6</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">25/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Recalibração completa com nova tabela de preços de 14 faixas — 518 contas do GAP recalculadas (MRR total: R$57,4k → R$86,0k)</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Coluna "Plano Equiv." substituída por "Limite Tier" na tabela do GAP</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Sumário Executivo, Score CS e KPIs do GAP atualizados com novo potencial de R$86k</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Cards "Acumulado 17 meses" removidos do GAP e do Score CS</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.5</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">Jun/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Expansão — contas pagantes que ultrapassam o limite do tier atual com potencial de upgrade de plano</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Tooltip do scatter do Quadrante enriquecida com info de pagamento e valor pago por conta</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Tabela de detalhes adicionada à aba Quadrante com filtro por quadrante</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.4</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">Jun/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Score CS — ranking de priorização do GAP para o time de CS, combinando recorrência, execuções e margem líquida</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Simulador de Receita — projeção incremental por dois vetores: conversão do GAP e expansão de tier</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Análise de Regras — distribuição de regras ativas/inativas, top contas e saúde das automações criadas</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.3</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">Jun/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba GAP de Cobrança — 518 contas usando sem pagar, tabela paginada com MRR potencial, execuções e segmento</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Sumário Executivo atualizado com KPIs financeiros e card de GAP de Cobrança</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Bridge adotantes → pagantes adicionada ao Funil — visualização do caminho de conversão</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.2</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">Jun/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Quadrante — matriz execuções × regras com scatter plot e classificação em Champions, Potenciais, Inativos e Caçadores</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Receita — MRR histórico, crescimento MoM e composição por segmento</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>MRR por Quadrante movido do Sumário para a aba Quadrante, KPIs financeiros adicionados ao Sumário Executivo</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.1</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">Jun/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Redesign completo com design system unificado — tipografia, paleta, cards e layout alinhados ao padrão Qive</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Responsividade implementada — grid adaptativo para diferentes larguras de tela</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v1.0</span></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">Jun/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Dashboard inicial com 5 abas: Sumário Executivo, Funil de adoção, TTFV, Engajamento e Coortes</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Base de dados processada: automacoes_uso, automacoes_regras, automacoes_acessov2 e automacoes_portfolio</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- ══════════════ FIM CHANGELOG ══════════════ -->
 
 <!-- ═══════════════ JS ═══════════════ -->
 <script>
@@ -3213,5 +3456,83 @@ function gdpNextPage() {
 
 gdpRenderTable();
 </script>
+
+<script>
+(function(){
+  // PIN armazenado como hash SHA-256 — o código original não aparece aqui
+  const HASH = '74b1c890fc0cc00c0a7fcaacd42857519689f905837bfec7a079d6783e6ca743';
+  const SESSION_KEY = 'auto_auth_v1';
+  let entered = '';
+
+  async function sha256(str) {
+    const buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
+    return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2,'0')).join('');
+  }
+
+  sha256(sessionStorage.getItem(SESSION_KEY) || '').then(h => {
+    // sessão já validada: guarda o hash da tentativa anterior
+  });
+  if(sessionStorage.getItem(SESSION_KEY) === HASH){
+    document.getElementById('pin-screen').classList.add('hidden');
+  }
+
+  function updateDots(){
+    for(let i=0;i<6;i++){
+      const d = document.getElementById('pd'+i);
+      d.classList.toggle('filled', i < entered.length);
+      d.classList.remove('error');
+    }
+    document.getElementById('pin-error').textContent = '';
+  }
+  window.pinPress = function(n){
+    if(entered.length >= 6) return;
+    entered += n;
+    updateDots();
+    if(entered.length === 6) setTimeout(checkPin, 80);
+  };
+  window.pinBackspace = function(){
+    entered = entered.slice(0,-1);
+    updateDots();
+  };
+  window.pinClear = function(){
+    entered = '';
+    updateDots();
+  };
+  async function checkPin(){
+    const h = await sha256(entered);
+    if(h === HASH){
+      sessionStorage.setItem(SESSION_KEY, HASH);
+      document.getElementById('pin-screen').classList.add('hidden');
+    } else {
+      for(let i=0;i<6;i++) document.getElementById('pd'+i).classList.add('error');
+      document.getElementById('pin-error').textContent = 'Código incorreto. Tente novamente.';
+      document.getElementById('pin-card').classList.add('pin-shake');
+      setTimeout(()=>{
+        entered = '';
+        updateDots();
+        document.getElementById('pin-card').classList.remove('pin-shake');
+      }, 400);
+    }
+  }
+  document.addEventListener('keydown', function(e){
+    if(document.getElementById('pin-screen').classList.contains('hidden')) return;
+    if(e.key >= '0' && e.key <= '9') pinPress(e.key);
+    else if(e.key === 'Backspace') pinBackspace();
+    else if(e.key === 'Escape') pinClear();
+  });
+})();
+
+// ═══ CHANGELOG ═══
+function openChangelog() {
+  document.getElementById('changelog-modal').classList.add('open');
+}
+function closeChangelog() {
+  document.getElementById('changelog-modal').classList.remove('open');
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeChangelog();
+});
+</script>
+
 </body>
 </html>
