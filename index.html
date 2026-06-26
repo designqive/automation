@@ -299,12 +299,13 @@ tbody td { padding: 9px 16px; color: #374151; }
   <button class="section-btn" onclick="switchSection('funil',this)">Adoção</button>
   <button class="section-btn" onclick="switchSection('eng',this)">Engajamento</button>
   <button class="section-btn" onclick="switchSection('receita',this)">Receita</button>
+  <button class="section-btn" onclick="switchSection('regras',this)">Profundidade</button>
   <button class="section-btn" onclick="switchSection('expansao',this)">Expansão</button>
+  <button class="section-btn" onclick="switchSection('quadrant',this)">Perfil de uso</button>
   <div class="section-dropdown" id="dropdown-acessorias">
     <button class="section-dropdown-btn" id="dropdown-acessorias-btn" onclick="toggleDropdown(event)">Análises acessórias ▾</button>
     <div class="section-dropdown-menu">
       <button class="section-dropdown-item" onclick="switchSection('ttfv',this)">TTFV</button>
-      <button class="section-dropdown-item" onclick="switchSection('quadrant',this)">Quadrante</button>
       <button class="section-dropdown-item" onclick="switchSection('gap',this)">GAP de Cobrança</button>
       <button class="section-dropdown-item" onclick="switchSection('score',this)">Score CS</button>
       <button class="section-dropdown-item" onclick="switchSection('sim',this)">Simulador</button>
@@ -434,17 +435,7 @@ tbody td { padding: 9px 16px; color: #374151; }
       </div>
     </div>
 
-    <div class="strategic-box">
-      <div class="title">🎯 Prioridade Estratégica</div>
-      <div class="body">
-        O produto tem três vetores de crescimento claros e não excludentes.
-        <b style="color:#fff">(1) Ativação:</b> 5.088 contas acessaram o módulo mas nunca criaram uma regra — o maior gargalo do funil. Dado que 86% de quem ativa também adota, cada conta ativada tem alta probabilidade de gerar uso real.
-        <b style="color:#fff">(2) Monetização do uso existente:</b> 518 contas já ultrapassam as 50 ações/mês sem nenhum registro de cobrança — R$86,0k de potencial imediato em Mai/26, acumulado em R$1.204k nos últimos 17 meses. 783 dessas contas são recorrentes há 3+ meses, indicando uso consolidado.
-        <b style="color:#fff">(3) Retenção:</b> 118 contas saíram da base pagante (R$9,6k). Entender se é churn real, redução de uso ou renegociação é essencial para proteger a base antes de acelerar aquisição.
-        Por segmento, <b style="color:#93c5fd">Enterprise</b> e <b style="color:#6ee7b7">Mid Market</b> concentram o maior potencial de ARPA, enquanto <b style="color:#fde68a">Velocity</b> domina em volume absoluto do gap.
-      </div>
-    </div>
-
+    
   </div>
 </div>
 
@@ -847,12 +838,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 <!-- ═══════════════ GAP DE COBRANÇA ═══════════════ -->
 <div id="section-gap" class="panel">
   <div class="content">
-    <div class="note" style="margin:14px 0 16px;border-left-color:#f59e0b;background:#fffbeb">
-      ⚠️ <b>Dado investigativo:</b> Os valores abaixo representam o potencial máximo estimado pela tabela de preços padrão.
-      Possíveis hipóteses: (1) automações incluídas em plano base Qive por contrato, (2) falha no processo de billing, (3) gap no pipeline de dados do produto.
-      <b>Recomendado validar com RevOps antes de tomar ação.</b>
-    </div>
-
+    
     <!-- KPIs -->
     <div class="kpi-row kpi-auto" style="margin-bottom:16px">
       <div class="kpi" style="border-left:4px solid #dc2626">
@@ -1710,7 +1696,7 @@ function renderFunilReceita() {
 }
 
 // ===================== NAVIGATION =====================
-const DROPDOWN_SECTIONS = ['ttfv','quadrant','gap','score','sim','regras','gdp'];
+const DROPDOWN_SECTIONS = ['ttfv','gap','score','sim','gdp'];
 function switchSection(id, btn) {
   document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.section-btn').forEach(b=>b.classList.remove('active'));
@@ -3625,7 +3611,7 @@ const INFO = {
   'adocao':'Contas com ao menos 1 regra que disparou ações — criaram regras que estão gerando execuções reais, extraindo valor ativo do produto.',
   'maa':'MAA (Monthly Active Accounts): contas com ao menos 1 execução de automação em Mai/26. Métrica principal de engajamento ativo.',
   'execucoes':'Total de execuções de automações disparadas por contas ativas em Mai/26. Reflete o volume de uso do produto.',
-  'ttfv-median':'TTFV (Time To First Value) mediano: tempo em dias entre o cadastro da conta e a primeira execução de automação. Indica a velocidade de ativação do produto.',
+  'ttfv-median':'TTFV (Time To First Value) mediano: tempo em dias entre o primeiro acesso ao módulo de automações e a criação da primeira regra. Indica a velocidade de ativação do produto.',
   'regras-ativas':'Total de regras de automação com ao menos 1 execução em Mai/26 — indica a profundidade de configuração do portfólio.',
   'mrr':'Receita Mensal Recorrente do produto Automações em Mai/26 — apenas contas com cobrança ativa.',
   'contas-pagantes':'Contas com MRR ativo no produto Automações em Mai/26 — já convertidas de uso para pagamento.',
@@ -3635,7 +3621,7 @@ const INFO = {
   // ── Adoção / Funil ─────────────────────────────────────────
   'nunca-ativaram':'Contas que cadastraram regras mas nunca dispararam nenhuma execução — falha de ativação. São o maior volume de perda no funil.',
   'ativaram':'Contas que executaram ao menos 1 automação em qualquer momento histórico. Inclui quem ativou mas deixou de usar.',
-  'ttfv-funil':'TTFV mediano do segmento: tempo em dias entre o cadastro da primeira regra e a primeira execução disparada.',
+  'ttfv-funil':'TTFV mediano do segmento: tempo em dias entre o primeiro acesso ao módulo e a criação da primeira regra.',
   'ativacao-semana':'% de contas que ativaram (primeira execução) dentro de 7 dias após criar a primeira regra — janela crítica de ativação.',
   // ── TTFV ───────────────────────────────────────────────────
   'ttfv-dist':'TTFV (Time To First Value): dias entre a criação da primeira regra e o primeiro disparo de execução. Contas no Dia 0 ativaram no mesmo dia que cadastraram — sinal de onboarding eficiente.',
