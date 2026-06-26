@@ -348,7 +348,7 @@ tbody td { padding: 9px 16px; color: #374151; }
   <h1>Automações · Performance</h1>
   <div style="display:flex;align-items:center;gap:12px">
     <span style="font-size:13px;opacity:.7">Jan/2025 – Mai/2026</span>
-    <button class="version-badge" onclick="openChangelog()">v2.2</button>
+    <button class="version-badge" onclick="openChangelog()">v2.4</button>
     <button class="strat-btn" onclick="openStrat()">🎯 Estratégia</button>
   </div>
 </header>
@@ -1825,7 +1825,37 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="changelog-body">
 
       <div class="cl-entry">
-        <div class="cl-version-col"><span class="cl-vbadge">v2.2</span><div class="cl-line"></div></div>
+        <div class="cl-version-col"><span class="cl-vbadge">v2.4</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">26/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Drawer de conta — painel lateral com diagnóstico completo: TTFV, regras ativas vs total, execuções de maio com tendência, quadrante e histórico mensal Dez/25–Mai/26 com barras proporcionais</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Drawer — bloco de receita com MRR atual, tier contratado, alerta de over-limit com multiplicador e potencial/delta de MRR para ações de conversão e expansão</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Drawer — ação sugerida com razão contextual gerada dinamicamente por tipo de ação e tier recomendado com preço</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>JSON enriquecido com execuções mensais reais (campo mx) para os 6 meses Dez/25–Mai/26, substituindo a estimativa por nível do sparkline</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v2.3</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">26/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Aba Visão por Conta — lista de trabalho para CS com 7.440 contas, filtros por Segmento / Etapa / Ação / Quadrante, busca por ID, ordenação em 5 colunas e paginação de 25 linhas</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Tier contratado inferido para todas as contas pagantes — tiers com nome explícito mapeados diretamente; plano "Automações" (legacy) mapeado via faixa de preço cobrado em Mai/26</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>75 contas identificadas com uso acima do limite do tier contratado — ação sugerida "Expandir tier" atribuída automaticamente com tier adequado e preço calculado pela tabela oficial</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>1.068 contas com ação "Converter para pagamento" com tier recomendado e potencial MRR (R$ 85.977/mês); 75 contas "Expandir tier" com MRR adicional de R$ 14.054/mês</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Coluna USO — sparkline de 6 meses com dots coloridos (nível 3 em vermelho para distinguir de médio), tooltip por dot com mês e nível, e legenda no cabeçalho</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Coluna Tendência (↑ ↓ →) adicionada ao lado de Exec. Mai; colunas reordenadas e "Seg." renomeado para "Segmento"</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Quadrantes padronizados com Perfil de uso: Champion / Explorador / Dependente / Em Risco — cores e critérios idênticos em ambas as abas</div>
+          </div>
+        </div>
+      </div>
+
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v2.2</span><div class="cl-line"></div>
         <div class="cl-content">
           <div class="cl-meta"><span class="cl-date">26/06/2026</span><span class="cl-author">Arthur Silva</span></div>
           <div class="cl-changes">
