@@ -1,0 +1,28 @@
+Dashboard de Automações — Qive
+
+Repositório do dashboard analítico do produto Automações da Qive. O dashboard centraliza os principais indicadores de adoção, receita, gap de cobrança e potencial de expansão do produto.
+
+O que o dashboard cobre
+
+O painel é dividido em abas temáticas que respondem perguntas estratégicas diferentes:
+
+Sumário Executivo — visão consolidada dos principais indicadores do produto em um único lugar
+Funil — jornada das contas desde o primeiro acesso até o pagamento, com bridge entre adotantes e pagantes
+TTFV — tempo até o primeiro valor, medindo velocidade de ativação por segmento e coorte
+Engajamento — profundidade de uso por conta (regras criadas, execuções recorrentes)
+Coortes — retenção e evolução de pagantes agrupados por mês de entrada
+Quadrante — matriz execuções × regras para classificar contas em Champions, Potenciais, Inativos e Caçadores
+Receita — MRR atual, crescimento histórico e composição por segmento
+GAP de Cobrança — contas que usam o produto mas não pagam, com MRR potencial e score de priorização
+Score CS — ranking de prioridade para o time de Customer Success baseado em margem líquida, recorrência e volume de execuções
+Simulador — projeção de receita incremental por dois vetores: conversão do GAP e expansão de plano
+Análise de Regras — distribuição e saúde das automações criadas por conta
+Expansão — contas pagantes que ultrapassam o limite do tier atual e têm potencial de upgrade
+Potencial GdP — funil de adoção de Automações dentro da base de assinantes de Gestão de Pagamentos
+Dados utilizados
+
+Os dados são estáticos, processados com referência em Mai/26, e embutidos diretamente no HTML — o dashboard roda sem backend, sem dependências externas além do Chart.js.
+
+Acesso
+
+O dashboard é publicado via GitHub Pages e atualizado manualmente sempre que há uma nova versão do arquivo.
