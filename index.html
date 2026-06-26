@@ -214,7 +214,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 /* arrow now inline */
 .section-dropdown-btn.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
 .section-dropdown-btn:hover { color: #1a1a2e; }
-.section-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 0 0 8px 8px; min-width: 200px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+.section-dropdown-menu { display: none; position: fixed; background: #fff; border: 1px solid #e5e7eb; border-radius: 0 0 8px 8px; min-width: 200px; z-index: 9999; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
 .section-dropdown-menu.open { display: block; }
 .section-dropdown-item { display: block; width: 100%; padding: 11px 18px; border: none; background: transparent; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7280; text-align: left; transition: background 0.15s; white-space: nowrap; }
 .section-dropdown-item:hover { background: #f9fafb; color: #1a1a2e; }
@@ -1734,7 +1734,12 @@ function switchSection(id, btn) {
 function toggleDropdown(e) {
   e.stopPropagation();
   const menu = document.querySelector('.section-dropdown-menu');
-  if (menu) menu.classList.toggle('open');
+  if (!menu) return;
+  const btn = document.getElementById('dropdown-acessorias-btn');
+  const rect = btn.getBoundingClientRect();
+  menu.style.top  = rect.bottom + 'px';
+  menu.style.left = rect.left + 'px';
+  menu.classList.toggle('open');
 }
 // close dropdown on outside click — uses contains() to avoid race with stopPropagation
 document.addEventListener('click', function(e) {
