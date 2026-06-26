@@ -210,11 +210,11 @@ tbody td { padding: 9px 16px; color: #374151; }
 /* Dropdown nav */
 .section-dropdown { position: relative; display: flex; align-items: stretch; }
 .section-dropdown-btn { padding: 14px 20px; border: none; background: transparent; font-size: 14px; font-weight: 600; cursor: pointer; border-bottom: 3px solid transparent; color: #9ca3af; transition: all 0.2s; display: flex; align-items: center; gap: 5px; white-space: nowrap; }
-.section-dropdown-btn::after { content: '▾'; font-size: 11px; }
+/* arrow now inline */
 .section-dropdown-btn.active { color: #1a1a2e; border-bottom-color: #1a1a2e; }
 .section-dropdown-btn:hover { color: #1a1a2e; }
 .section-dropdown-menu { display: none; position: absolute; top: 100%; left: 0; background: #fff; border: 1px solid #e5e7eb; border-radius: 0 0 8px 8px; min-width: 200px; z-index: 100; box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-.section-dropdown:hover .section-dropdown-menu { display: block; }
+.section-dropdown-menu.open { display: block; }
 .section-dropdown-item { display: block; width: 100%; padding: 11px 18px; border: none; background: transparent; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7280; text-align: left; transition: background 0.15s; white-space: nowrap; }
 .section-dropdown-item:hover { background: #f9fafb; color: #1a1a2e; }
 .section-dropdown-item.active { color: #1a1a2e; font-weight: 700; background: #f3f4f6; }
@@ -269,7 +269,7 @@ tbody td { padding: 9px 16px; color: #374151; }
   <button class="section-btn" onclick="switchSection('receita',this)">Receita</button>
   <button class="section-btn" onclick="switchSection('expansao',this)">Expansão</button>
   <div class="section-dropdown" id="dropdown-acessorias">
-    <button class="section-dropdown-btn" id="dropdown-acessorias-btn">Análises acessórias</button>
+    <button class="section-dropdown-btn" id="dropdown-acessorias-btn" onclick="toggleDropdown(event)">Análises acessórias ▾</button>
     <div class="section-dropdown-menu">
       <button class="section-dropdown-item" onclick="switchSection('ttfv',this)">TTFV</button>
       <button class="section-dropdown-item" onclick="switchSection('quadrant',this)">Quadrante</button>
@@ -513,7 +513,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 <!-- ═══════════════ ENGAJAMENTO ═══════════════ -->
 <div id="section-eng" class="panel">
   <div class="tabs">
-    <button class="tab active" id="eng-tab-Total" onclick="engSetSeg('Total',this)">Total</button>
+    <button class="tab active" id="eng-tab-Todos" onclick="engSetSeg('Todos',this)">Todos</button>
     <button class="tab" id="eng-tab-Velocity" onclick="engSetSeg('Velocity',this)">Velocity</button>
     <button class="tab" id="eng-tab-Mid Market" onclick="engSetSeg('Mid Market',this)">Mid Market</button>
     <button class="tab" id="eng-tab-Enterprise" onclick="engSetSeg('Enterprise',this)">Enterprise</button>
@@ -1204,78 +1204,78 @@ tbody td { padding: 9px 16px; color: #374151; }
 
 <!-- ═══════════════ EXPANSÃO ═══════════════ -->
 <div id="section-expansao" class="panel">
+  <div class="tabs" id="exp-tabs">
+    <button class="tab active" onclick="expSetSeg('Todos',this)">Todos</button>
+    <button class="tab" onclick="expSetSeg('Velocity',this)">Velocity</button>
+    <button class="tab" onclick="expSetSeg('Mid',this)">Mid Market</button>
+    <button class="tab" onclick="expSetSeg('Enterprise',this)">Enterprise</button>
+    <button class="tab" onclick="expSetSeg('Contador',this)">Contador</button>
+  </div>
   <div class="content">
+
     <!-- KPIs -->
-    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px">
-      <div class="card" style="text-align:center">
-        <div style="font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Contas em Overflow</div>
-        <div style="font-size:32px;font-weight:800;color:#dc2626">59</div>
-        <div style="font-size:11px;color:#6b7280;margin-top:4px">acima do limite contratado</div>
+    <div class="kpi-row kpi-row-3" style="margin-bottom:24px">
+      <div class="kpi" style="border-left:4px solid #dc2626">
+        <div class="kpi-label">Contas em Overflow</div>
+        <div class="kpi-value" style="color:#dc2626">59</div>
+        <div class="kpi-sub">acima do limite contratado</div>
       </div>
-      <div class="card" style="text-align:center">
-        <div style="font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">MRR Potencial de Expansão</div>
-        <div style="font-size:32px;font-weight:800;color:#059669">R$6.678</div>
-        <div style="font-size:11px;color:#6b7280;margin-top:4px">receita adicional/mês</div>
+      <div class="kpi" style="border-left:4px solid #059669">
+        <div class="kpi-label">MRR Potencial de Expansão</div>
+        <div class="kpi-value" style="color:#059669">R$6.678</div>
+        <div class="kpi-sub">receita adicional estimada/mês</div>
       </div>
-      <div class="card" style="text-align:center">
-        <div style="font-size:11px;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">Mediana de Overflow</div>
-        <div style="font-size:32px;font-weight:800;color:#d97706">85.1%</div>
-        <div style="font-size:11px;color:#6b7280;margin-top:4px">acima do limite contratado</div>
+      <div class="kpi" style="border-left:4px solid #d97706">
+        <div class="kpi-label">Mediana de Overflow</div>
+        <div class="kpi-value" style="color:#d97706">85,1%</div>
+        <div class="kpi-sub">acima do limite contratado</div>
       </div>
     </div>
 
     <!-- Charts row -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
-      <div class="card">
-        <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:12px">MRR Potencial por Segmento</div>
-        <div style="height:220px"><canvas id="exp-seg-chart"></canvas></div>
+      <div class="chart-card">
+        <div class="chart-title">MRR Potencial por Segmento</div>
+        <div class="chart-sub">Receita adicional estimada por segmento · Mai/2026</div>
+        <canvas id="exp-seg-chart" style="max-height:220px"></canvas>
       </div>
-      <div class="card">
-        <div style="font-size:13px;font-weight:600;color:#374151;margin-bottom:12px">Contas &amp; MRR Potencial por Tier Atual</div>
-        <div style="height:220px"><canvas id="exp-tier-chart"></canvas></div>
+      <div class="chart-card">
+        <div class="chart-title">Contas &amp; MRR por Tier Atual</div>
+        <div class="chart-sub">Distribuição de contas em overflow por faixa de tier contratado</div>
+        <canvas id="exp-tier-chart" style="max-height:220px"></canvas>
       </div>
-    </div>
-
-    <!-- Segment filter -->
-    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px">
-      <button class="exp-seg-btn" onclick="expSetSeg('Todos',this)"
-        style="padding:5px 14px;border-radius:9999px;border:1.5px solid #1d4ed8;background:#1d4ed8;color:#fff;font-size:12px;font-weight:600;cursor:pointer">Todos</button>
-      <button class="exp-seg-btn" onclick="expSetSeg('Velocity',this)"
-        style="padding:5px 14px;border-radius:9999px;border:1.5px solid #e5e7eb;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600;cursor:pointer">Velocity</button>
-      <button class="exp-seg-btn" onclick="expSetSeg('Enterprise',this)"
-        style="padding:5px 14px;border-radius:9999px;border:1.5px solid #e5e7eb;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600;cursor:pointer">Enterprise</button>
-      <button class="exp-seg-btn" onclick="expSetSeg('Mid',this)"
-        style="padding:5px 14px;border-radius:9999px;border:1.5px solid #e5e7eb;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600;cursor:pointer">Mid</button>
-      <button class="exp-seg-btn" onclick="expSetSeg('Contador',this)"
-        style="padding:5px 14px;border-radius:9999px;border:1.5px solid #e5e7eb;background:#f3f4f6;color:#374151;font-size:12px;font-weight:600;cursor:pointer">Contador</button>
     </div>
 
     <!-- Table -->
-    <div class="card" style="padding:0;overflow:hidden">
-      <table style="width:100%;border-collapse:collapse">
-        <thead>
-          <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">
-            <th style="padding:10px 10px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Conta</th>
-            <th style="padding:10px 10px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Segmento</th>
-            <th style="padding:10px 10px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Tier Atual</th>
-            <th style="padding:10px 10px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Limite</th>
-            <th style="padding:10px 10px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Exec./mês</th>
-            <th style="padding:10px 10px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Overflow</th>
-            <th style="padding:10px 10px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">Tier Sugerido</th>
-            <th style="padding:10px 10px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">MRR Atual</th>
-            <th style="padding:10px 10px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase">MRR Adicional</th>
-          </tr>
-        </thead>
-        <tbody id="exp-tbody"></tbody>
-      </table>
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 16px;border-top:1px solid #e5e7eb;background:#fafafa">
-        <span id="exp-page-info" style="font-size:12px;color:#6b7280"></span>
-        <div style="display:flex;gap:8px">
-          <button id="exp-prev" onclick="expChangePage(-1)"
-            style="padding:5px 14px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#374151;font-size:12px;cursor:pointer">← Anterior</button>
-          <button id="exp-next" onclick="expChangePage(1)"
-            style="padding:5px 14px;border-radius:6px;border:1px solid #e5e7eb;background:#fff;color:#374151;font-size:12px;cursor:pointer">Próxima →</button>
+    <div class="chart-card" style="padding:0;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid #f3f4f6">
+        <div>
+          <div class="chart-title" style="margin-bottom:2px">Contas em Overflow</div>
+          <div class="chart-sub">Contas pagantes que ultrapassaram o limite do tier contratado · Média últimos 6 meses</div>
         </div>
+        <span id="exp-page-info" style="font-size:12px;color:#9ca3af;white-space:nowrap"></span>
+      </div>
+      <div style="overflow-x:auto">
+        <table style="width:100%;border-collapse:collapse">
+          <thead>
+            <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Conta</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Segmento</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Tier Atual</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Limite</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Exec./mês</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Overflow</th>
+              <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Tier Sugerido</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">MRR Atual</th>
+              <th style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">MRR Adicional</th>
+            </tr>
+          </thead>
+          <tbody id="exp-tbody"></tbody>
+        </table>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:flex-end;padding:12px 16px;border-top:1px solid #e5e7eb;background:#fafafa;gap:8px">
+        <button id="exp-prev" onclick="expChangePage(-1)" class="filter-btn">← Anterior</button>
+        <button id="exp-next" onclick="expChangePage(1)" class="filter-btn">Próxima →</button>
       </div>
     </div>
 
@@ -1666,7 +1666,21 @@ function switchSection(id, btn) {
   }
   if (id === 'expansao') setTimeout(function(){ if(typeof initExpansaoCharts==='function') initExpansaoCharts(); }, 50);
   if (id === 'quadrant') setTimeout(function(){ if(typeof renderQdTable==='function') renderQdTable(); }, 50);
+  // close dropdown after navigation
+  const menu = document.querySelector('.section-dropdown-menu');
+  if (menu) menu.classList.remove('open');
 }
+
+function toggleDropdown(e) {
+  e.stopPropagation();
+  const menu = document.querySelector('.section-dropdown-menu');
+  if (menu) menu.classList.toggle('open');
+}
+// close dropdown on outside click
+document.addEventListener('click', function() {
+  const menu = document.querySelector('.section-dropdown-menu');
+  if (menu) menu.classList.remove('open');
+});
 
 // ===================== FUNIL =====================
 let currentFunilSeg = 'Todos';
@@ -3118,15 +3132,8 @@ function expFilteredRows() {
 window.expSetSeg = function(seg, btn) {
   expSegFilter = seg;
   expPage = 1;
-  document.querySelectorAll('.exp-seg-btn').forEach(b => {
-    b.style.background = '#f3f4f6';
-    b.style.color = '#374151';
-    b.style.border = '1.5px solid #e5e7eb';
-  });
-  const c = SEG_COLORS_EXP[seg] || '#1d4ed8';
-  btn.style.background = seg === 'Todos' ? '#1d4ed8' : c;
-  btn.style.color = '#fff';
-  btn.style.border = `1.5px solid ${seg === 'Todos' ? '#1d4ed8' : c}`;
+  document.querySelectorAll('#exp-tabs .tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   renderExpTable();
 };
 
@@ -3502,8 +3509,8 @@ let _engCharts = {};
 function engSetSeg(seg, btn) {
   document.querySelectorAll('.tabs .tab').forEach(b => { if(b.id && b.id.startsWith('eng-tab-')) b.classList.remove('active'); });
   btn.classList.add('active');
-  const d = seg === 'Total' ? ENG : ENG_SEG[seg];
-  const color = {Velocity:'#1d4ed8','Mid Market':'#15803d',Enterprise:'#b91c1c',Contador:'#c2410c',Total:'#1d4ed8'}[seg] || '#1d4ed8';
+  const d = seg === 'Todos' ? ENG : ENG_SEG[seg];
+  const color = {Velocity:'#1d4ed8','Mid Market':'#15803d',Enterprise:'#b91c1c',Contador:'#c2410c',Todos:'#1d4ed8'}[seg] || '#1d4ed8';
   const maa = d.maa[d.maa.length-1];
   const exc = d.exec[d.exec.length-1];
   const reg = d.regras[d.regras.length-1];
