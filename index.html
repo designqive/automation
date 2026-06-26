@@ -1669,18 +1669,19 @@ tbody td { padding: 9px 16px; color: #374151; }
           <thead>
             <tr style="background:#f9fafb;border-bottom:2px solid #e5e7eb">
               <th onclick="contasSort('i')" style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">Conta <span id="sort-i"></span></th>
-              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Seg.</th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Segmento</th>
               <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Etapa</th>
-              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Quadrante</th>
-              <th onclick="contasSort('r')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">Regras <span id="sort-r"></span></th>
-              <th onclick="contasSort('x')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">Exec. Mai <span id="sort-x"></span></th>
               <th onclick="contasSort('t')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">TTFV <span id="sort-t"></span></th>
-              <th onclick="contasSort('m')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">MRR Auto <span id="sort-m"></span></th>
-              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">
-                Tier <i class="info-icon sm" onmouseenter="showTip(this,'Tier contratado em Mai/26.<br>⚠ indica uso acima do limite — candidata a expansão de plano.')" onmouseleave="hideTip()">ℹ</i>
-              </th>
+              <th onclick="contasSort('r')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">Regras <span id="sort-r"></span></th>
               <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">
                 USO <i class="info-icon sm" onmouseenter="showTip(this,'Histórico de execuções dos últimos 6 meses (Dez/25–Mai/26).<br>Cada ponto = 1 mês:<br>⚫ Inativo &nbsp;·&nbsp; 🟡 Baixo (1–99)<br>🟠 Médio (100–999) &nbsp;·&nbsp; 🔴 Alto (1.000+)')" onmouseleave="hideTip()">ℹ</i>
+              </th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Quadrante</th>
+              <th onclick="contasSort('x')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">Exec. Mai <span id="sort-x"></span></th>
+              <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Tend.</th>
+              <th onclick="contasSort('m')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">MRR <span id="sort-m"></span></th>
+              <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;white-space:nowrap">
+                Tier <i class="info-icon sm" onmouseenter="showTip(this,'Tier contratado em Mai/26.<br>⚠ indica uso acima do limite — candidata a expansão de plano.')" onmouseleave="hideTip()">ℹ</i>
               </th>
               <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Ação sugerida</th>
             </tr>
@@ -4367,13 +4368,14 @@ function contasRender() {
       <td style="padding:8px 12px;font-size:12px;color:#374151;font-weight:600;font-family:monospace">${a.i}</td>
       <td style="padding:8px 12px">${segBadge(a.s)}</td>
       <td style="padding:8px 12px">${etapaBadge(a.e)}</td>
-      <td style="padding:8px 12px">${quadBadge(a.q)}</td>
-      <td style="padding:8px 12px;text-align:right;font-size:12px;color:#374151">${a.ra}<span style="color:#d1d5db">/${a.r}</span></td>
-      <td style="padding:8px 12px;text-align:right;font-size:12px;font-weight:600;color:${a.x>0?'#1a1a2e':'#d1d5db'}">${a.x>0?a.x.toLocaleString('pt-BR'):'—'}</td>
       <td style="padding:8px 12px;text-align:right;font-size:12px;color:#6b7280">${a.t!=null?a.t+'d':'—'}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;color:#374151">${a.ra}<span style="color:#d1d5db">/${a.r}</span></td>
+      <td style="padding:8px 12px;text-align:center;white-space:nowrap">${sparkline(a.d)}</td>
+      <td style="padding:8px 12px">${quadBadge(a.q)}</td>
+      <td style="padding:8px 12px;text-align:right;font-size:12px;font-weight:600;color:${a.x>0?'#1a1a2e':'#d1d5db'}">${a.x>0?a.x.toLocaleString('pt-BR'):'—'}</td>
+      <td style="padding:8px 12px;text-align:center;font-size:14px;font-weight:700;color:${tendColor(a.td)}">${a.td||'—'}</td>
       <td style="padding:8px 12px;text-align:right;font-size:12px;color:${a.m>0?'#059669':'#d1d5db'}">${a.m>0?'R$ '+a.m.toLocaleString('pt-BR',{minimumFractionDigits:0}):'—'}</td>
       <td style="padding:8px 12px;white-space:nowrap">${tierBadge(a.ti, a.ov)}</td>
-      <td style="padding:8px 12px;text-align:center;white-space:nowrap">${sparkline(a.d)}</td>
       <td style="padding:8px 12px">
         ${acaoBadge(a.a)}
         ${(a.a==='Converter para pagamento'||a.a==='Expandir tier')&&a.rt?`<div style="margin-top:3px;font-size:10px;color:#6b7280;white-space:nowrap">${a.rt} &nbsp;·&nbsp; <span style="color:${a.a==='Expandir tier'?'#7e22ce':'#059669'};font-weight:600">R$ ${a.rp.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>${a.a==='Expandir tier'&&a.m>0?`<span style="color:#9ca3af"> (+R$ ${(a.rp-a.m).toLocaleString('pt-BR',{minimumFractionDigits:2})})</span>`:''}</div>`:''}
@@ -4388,7 +4390,7 @@ function contasRender() {
   document.getElementById('contas-next').disabled = contasPage===total;
 
   // Sort indicators
-  ['i','r','x','t','m'].forEach(k=>{
+  ['i','t','r','x','m'].forEach(k=>{
     const el=document.getElementById('sort-'+k);
     if(el) el.textContent = contasSortKey===k?(contasSortAsc?'↑':'↓'):'';
   });
