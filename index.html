@@ -241,6 +241,32 @@ tbody td { padding: 9px 16px; color: #374151; }
 .filter-btn:hover { border-color: #1a1a2e; color: #1a1a2e; }
 .filter-btn.active { background: #1a1a2e; color: #fff; border-color: #1a1a2e; }
 .filter-label { font-size: 10px; font-weight: 600; color: #9ca3af; text-transform: uppercase; letter-spacing: .05em; margin-bottom: 5px; }
+
+/* Strategy overlay */
+#strat-overlay { display: none; position: fixed; inset: 0; background: #f5f6fa; z-index: 10000; overflow-y: auto; }
+#strat-overlay.open { display: block; }
+.strat-panel { width: 100%; padding: 0 40px 60px; }
+.strat-header { background: #1a1a2e; color: #fff; padding: 18px 40px; display: flex; align-items: center; justify-content: space-between; margin: 0 -40px 28px; }
+.strat-title { font-size: 17px; font-weight: 700; color: #fff; }
+.strat-sub { font-size: 12px; color: rgba(255,255,255,0.45); margin-top: 3px; }
+.strat-close { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .15s; }
+.strat-close:hover { background: rgba(255,255,255,0.18); }
+.strat-chart-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 28px 28px 20px; display: flex; flex-direction: column; align-items: center; margin-bottom: 20px; }
+.strat-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-top: 20px; justify-content: center; }
+.strat-leg-item { display: flex; align-items: center; gap: 7px; font-size: 12px; color: #374151; font-weight: 500; }
+.strat-leg-line { width: 28px; height: 3px; border-radius: 2px; }
+.strat-leg-dash { width: 28px; height: 0; border-top: 2.5px dashed currentColor; }
+.strat-table-wrap { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; }
+.strat-table-title { font-size: 12px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 14px; }
+.strat-table { width: 100%; border-collapse: collapse; font-size: 12px; table-layout: fixed; }
+.strat-table th { text-align: left; color: #6b7280; font-weight: 700; padding: 8px 12px; border-bottom: 2px solid #e5e7eb; font-size: 11px; text-transform: uppercase; letter-spacing: .04em; }
+.strat-table th:first-child { width: 52px; }
+.strat-table td { padding: 9px 12px; color: #374151; border-bottom: 1px solid #f3f4f6; vertical-align: top; line-height: 1.45; font-size: 11.5px; }
+.strat-table tr:last-child td { border-bottom: none; }
+.strat-table tr:hover td { background: #f9fafb; }
+.strat-table .lvl { font-weight: 700; color: #9ca3af; font-size: 10px; white-space: nowrap; background: #f3f4f6; border-radius: 4px; padding: 2px 6px; }
+.strat-btn { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.2); color: #fff; border-radius: 8px; padding: 6px 14px; font-size: 12px; font-weight: 600; cursor: pointer; transition: background .15s; letter-spacing: .02em; }
+.strat-btn:hover { background: rgba(255,255,255,0.18); }
 </style>
 </head>
 <body>
@@ -290,9 +316,116 @@ tbody td { padding: 9px 16px; color: #374151; }
   <h1>Automações · Performance</h1>
   <div style="display:flex;align-items:center;gap:12px">
     <span style="font-size:13px;opacity:.7">Jan/2025 – Mai/2026</span>
-    <button class="version-badge" onclick="openChangelog()">v2.0</button>
+    <button class="version-badge" onclick="openChangelog()">v2.2</button>
+    <button class="strat-btn" onclick="openStrat()">🎯 Estratégia</button>
   </div>
 </header>
+
+<!-- ══════════════ STRATEGY OVERLAY ══════════════ -->
+<div id="strat-overlay">
+  <div class="strat-panel">
+    <div class="strat-header">
+      <div>
+        <div class="strat-title">Estratégia de Produto — Automações</div>
+        <div class="strat-sub">Posicionamento estratégico por dimensão · escala 0–5</div>
+      </div>
+      <button class="strat-close" onclick="closeStrat()">✕</button>
+    </div>
+
+    <!-- Radar -->
+    <div class="strat-chart-wrap">
+      <canvas id="stratRadar" style="max-height:500px;width:100%;max-width:700px"></canvas>
+      <div class="strat-legend">
+        <div class="strat-leg-item"><div class="strat-leg-line" style="background:#3b82f6"></div>Q1/2026</div>
+        <div class="strat-leg-item"><div class="strat-leg-line" style="background:#10b981"></div>Q2/2026</div>
+        <div class="strat-leg-item" style="color:#f59e0b"><div class="strat-leg-dash" style="border-color:#f59e0b"></div>Q3/2026 (Planejado)</div>
+        <div class="strat-leg-item" style="color:#a78bfa"><div class="strat-leg-dash" style="border-color:#a78bfa"></div>Q4/2026 (Planejado)</div>
+      </div>
+    </div>
+
+    <!-- Níveis reference table -->
+    <div class="strat-table-wrap">
+      <div class="strat-table-title">Referência de Níveis por Dimensão</div>
+      <table class="strat-table">
+        <thead>
+          <tr>
+            <th>Nível</th>
+            <th>Eventos</th>
+            <th>Dados</th>
+            <th>Comunicação</th>
+            <th>Automação</th>
+            <th>Integração</th>
+            <th>Compliance</th>
+            <th>Ação</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><span class="lvl">N0</span></td>
+            <td>Sem evidência</td>
+            <td>Sem evidência</td>
+            <td>Sem evidência</td>
+            <td>Sem evidência</td>
+            <td>Sem evidência</td>
+            <td>Sem evidência</td>
+            <td>Sem evidência</td>
+          </tr>
+          <tr>
+            <td><span class="lvl">N1</span></td>
+            <td>Recebimento</td>
+            <td>NF-e</td>
+            <td>E-mail</td>
+            <td>Etiquetas</td>
+            <td>E-mail</td>
+            <td>Gestão de regras</td>
+            <td>Criação</td>
+          </tr>
+          <tr>
+            <td><span class="lvl">N2</span></td>
+            <td>Emissão</td>
+            <td>CT-e</td>
+            <td>Ferramentas externas (via e-mail)</td>
+            <td>Movimentação de etapas</td>
+            <td>APIs</td>
+            <td>Controle de permissões</td>
+            <td>Edição</td>
+          </tr>
+          <tr>
+            <td><span class="lvl">N3</span></td>
+            <td>Temporizador</td>
+            <td>NFS-e</td>
+            <td>Notificações internas</td>
+            <td>Manifestação automática · Relatórios</td>
+            <td>ERPs</td>
+            <td>Logs de execução</td>
+            <td>Exclusão</td>
+          </tr>
+          <tr>
+            <td><span class="lvl">N4</span></td>
+            <td>Cancelamento</td>
+            <td>Contas a pagar</td>
+            <td>SMS</td>
+            <td>Comentários e anotações · Fechamento do mês</td>
+            <td>Webhooks</td>
+            <td>Auditoria</td>
+            <td>—</td>
+          </tr>
+          <tr>
+            <td><span class="lvl">N5</span></td>
+            <td>Atualização</td>
+            <td>Fornecedores · Utilities</td>
+            <td>WhatsApp</td>
+            <td>Pagamentos</td>
+            <td>—</td>
+            <td>—</td>
+            <td>—</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+<!-- ══════════════ FIM STRATEGY OVERLAY ══════════════ -->
 
 <div class="section-bar">
   <button class="section-btn active" onclick="switchSection('exec',this)">Sumário Executivo</button>
@@ -307,10 +440,9 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="section-dropdown-menu">
       <button class="section-dropdown-item" onclick="switchSection('ttfv',this)">TTFV</button>
       <button class="section-dropdown-item" onclick="switchSection('gap',this)">GAP de Cobrança</button>
-      <button class="section-dropdown-item" onclick="switchSection('score',this)">Score CS</button>
-      <button class="section-dropdown-item" onclick="switchSection('sim',this)">Simulador</button>
-      <button class="section-dropdown-item" onclick="switchSection('regras',this)">Análise de Regras</button>
       <button class="section-dropdown-item" onclick="switchSection('gdp',this)">Potencial GdP</button>
+      <button class="section-dropdown-item" onclick="switchSection('score',this)">Score CS <span style="font-size:9px;background:#f1f5f9;color:#94a3b8;border-radius:4px;padding:1px 5px;margin-left:4px;font-weight:600">WIP</span></button>
+      <button class="section-dropdown-item" onclick="switchSection('sim',this)">Simulador de Receita</button>
     </div>
   </div>
 </div>
@@ -1479,6 +1611,35 @@ tbody td { padding: 9px 16px; color: #374151; }
       <button class="changelog-close" onclick="closeChangelog()">✕</button>
     </div>
     <div class="changelog-body">
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v2.2</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">26/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Strategy Overlay — visão de posicionamento estratégico do produto por 7 dimensões (Eventos, Dados, Comunicação, Automação, Integração, Compliance, Ação) com radar chart de Q1 a Q4/2026</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Botão "🎯 Estratégia" adicionado ao header — abre tela cheia com radar e tabela de referência de níveis N0–N5 por dimensão</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Q1 e Q2/2026 exibidos com linhas sólidas (realizados); Q3 e Q4/2026 com linhas tracejadas (planejado)</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v2.1</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">26/06/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Cruzamento GdP × Automações com base de eventos: 188 contas inativas em ambos os produtos (R$ 44,7k MRR em risco) e 881 contas ativas em GdP sem nenhuma automação criada (R$ 378,2k MRR de oportunidade)</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Aba Potencial GdP — novo bloco de risco cruzado com donut de churn risk por segmento e barras horizontais de recência de uso GdP para contas de cross-sell</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Aba Potencial GdP redesenhada — chart-card, chart-title/sub, filtros de etapa e segmento com padrão badge, tabela e paginação padronizados</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Navegação reestruturada — "Profundidade" (ex-Análise de Regras) e "Perfil de uso" (ex-Quadrante) promovidos para o nav principal</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Dropdown "Análises acessórias" reordenado: TTFV → GAP de Cobrança → Potencial GdP → Score CS (WIP) → Simulador de Receita; "Análise de Regras" removido</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>Sumário Executivo — bloco "Prioridade Estratégica" removido</div>
+            <div class="cl-change"><span class="cl-tag ux">UX</span>GAP de Cobrança — aviso investigativo removido do topo da aba</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>TTFV — tooltips corrigidos: definição agora reflete "tempo entre o primeiro acesso ao módulo e a criação da primeira regra"</div>
+          </div>
+        </div>
+      </div>
 
       <div class="cl-entry">
         <div class="cl-version-col"><span class="cl-vbadge">v2.0</span><div class="cl-line"></div></div>
@@ -3611,6 +3772,68 @@ function gdpNextPage() {
 })();
 
 gdpRenderTable();
+
+// ─── STRATEGY OVERLAY ─────────────────────────────────────────────────
+let stratChart = null;
+
+const STRAT_DATA = {
+  labels: ['Eventos','Dados','Comunicação','Automação','Integração','Compliance','Ação'],
+  quarters: [
+    { label: 'Q1/2026',         data: [4,3,2,3,1,1,2], solid: true,  color: '#3b82f6' },
+    { label: 'Q2/2026',         data: [4,4,2,3,1,1,2], solid: true,  color: '#10b981' },
+    { label: 'Q3/2026 (Plan.)', data: [5,4,2,3,1,4,2], solid: false, color: '#f59e0b' },
+    { label: 'Q4/2026 (Plan.)', data: [5,5,3,4,2,4,3], solid: false, color: '#a78bfa' },
+  ]
+};
+
+function buildStratChart() {
+  if (stratChart) { stratChart.destroy(); stratChart = null; }
+  const ctx = document.getElementById('stratRadar').getContext('2d');
+  stratChart = new Chart(ctx, {
+    type: 'radar',
+    data: {
+      labels: STRAT_DATA.labels,
+      datasets: STRAT_DATA.quarters.map(q => ({
+        label: q.label,
+        data: q.data,
+        borderColor: q.color,
+        backgroundColor: q.solid ? q.color + '18' : 'transparent',
+        borderWidth: q.solid ? 2.5 : 2,
+        borderDash: q.solid ? [] : [6, 4],
+        pointBackgroundColor: q.color,
+        pointRadius: 4,
+        pointHoverRadius: 6,
+      }))
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: Nível ${ctx.raw}` } }
+      },
+      scales: {
+        r: {
+          min: 0, max: 5,
+          ticks: { stepSize: 1, color: '#9ca3af', font: { size: 10 }, backdropColor: 'transparent' },
+          grid: { color: '#e5e7eb' },
+          angleLines: { color: '#e5e7eb' },
+          pointLabels: { color: '#374151', font: { size: 12, weight: '600' } }
+        }
+      }
+    }
+  });
+}
+
+function openStrat() {
+  document.getElementById('strat-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  setTimeout(buildStratChart, 50);
+}
+
+function closeStrat() {
+  document.getElementById('strat-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
 </script>
 
 <script>
