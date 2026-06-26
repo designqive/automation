@@ -218,9 +218,33 @@ tbody td { padding: 9px 16px; color: #374151; }
 .section-dropdown-item { display: block; width: 100%; padding: 11px 18px; border: none; background: transparent; font-size: 13px; font-weight: 500; cursor: pointer; color: #6b7280; text-align: left; transition: background 0.15s; white-space: nowrap; }
 .section-dropdown-item:hover { background: #f9fafb; color: #1a1a2e; }
 .section-dropdown-item.active { color: #1a1a2e; font-weight: 700; background: #f3f4f6; }
+
+/* ── Info icons & tooltip ── */
+.info-icon { display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;background:#f3f4f6;border:1px solid #e5e7eb;font-size:10px;color:#9ca3af;cursor:pointer;vertical-align:middle;margin-left:5px;flex-shrink:0;transition:background .15s,color .15s;font-style:normal;user-select:none;line-height:1; }
+.info-icon:hover { background:#dbeafe;border-color:#93c5fd;color:#1d4ed8; }
+.info-icon.sm { width:13px;height:13px;font-size:8px;margin-left:3px; }
+#auto-tooltip { position:fixed;z-index:9998;background:#1a1a2e;color:#fff;font-size:12px;padding:8px 12px;border-radius:8px;max-width:280px;line-height:1.55;pointer-events:none;display:none;box-shadow:0 4px 14px rgba(0,0,0,.25); }
+/* ── Info modal ── */
+#auto-info-modal { display:none;position:fixed;inset:0;z-index:10000;background:rgba(0,0,0,.45);align-items:center;justify-content:center; }
+#auto-info-modal.open { display:flex; }
+#auto-info-box { background:#fff;border-radius:14px;padding:28px 28px 24px;max-width:520px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 12px 40px rgba(0,0,0,.2);position:relative; }
+#auto-info-box h3 { font-size:16px;font-weight:700;color:#1a1a2e;margin:0 0 14px; }
+#auto-info-box p { font-size:13px;color:#374151;line-height:1.6;margin:0 0 6px; }
+#auto-info-box b { color:#1a1a2e; }
+#auto-info-close { position:absolute;top:14px;right:18px;background:none;border:none;font-size:20px;color:#9ca3af;cursor:pointer;line-height:1; }
+#auto-info-close:hover { color:#1a1a2e; }
 </style>
 </head>
 <body>
+
+<div id="auto-tooltip"></div>
+<div id="auto-info-modal">
+  <div id="auto-info-box">
+    <button id="auto-info-close" onclick="closeAutoInfo()">✕</button>
+    <h3 id="auto-info-title"></h3>
+    <div id="auto-info-body"></div>
+  </div>
+</div>
 
 <div id="pin-screen">
   <div class="pin-card" id="pin-card">
@@ -264,7 +288,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
 <div class="section-bar">
   <button class="section-btn active" onclick="switchSection('exec',this)">Sumário Executivo</button>
-  <button class="section-btn" onclick="switchSection('funil',this)">Adoção</button>
+  <button class="section-btn" onclick="switchSection('funil',this)">Adoção <i class="info-icon sm" onmouseenter="showTip(this,INFO['adocao'])" onmouseleave="hideTip()">ℹ</i></button>
   <button class="section-btn" onclick="switchSection('eng',this)">Engajamento</button>
   <button class="section-btn" onclick="switchSection('receita',this)">Receita</button>
   <button class="section-btn" onclick="switchSection('expansao',this)">Expansão</button>
@@ -288,24 +312,24 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPI Row 1: Portfólio e Funil -->
     <div class="kpi-row kpi-auto" style="margin-bottom:14px">
       <div class="kpi" style="border-left:4px solid #1a1a2e">
-        <div class="kpi-label">Portfólio Qive</div>
+        <div class="kpi-label">Portfólio Qive <i class="info-icon sm" onmouseenter="showTip(this,INFO['portfolio-qive'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1a1a2e">14.291</div>
         <div class="kpi-sub">contas ativas na plataforma</div>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">Interesse</div>
+        <div class="kpi-label">Interesse <i class="info-icon sm" onmouseenter="showTip(this,INFO['interesse'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8">7.183</div>
         <div class="kpi-sub">acessaram o módulo</div>
         <span class="badge badge-blue">50,3% do portfólio</span>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
-        <div class="kpi-label">Ativação</div>
+        <div class="kpi-label">Ativação <i class="info-icon sm" onmouseenter="showTip(this,INFO['ativacao'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#d97706">2.095</div>
         <div class="kpi-sub">criaram ao menos 1 regra</div>
         <span class="badge badge-orange">29,2% de quem acessou</span>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Adoção</div>
+        <div class="kpi-label">Adoção <i class="info-icon sm" onmouseenter="showTip(this,INFO['adocao'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a">1.804</div>
         <div class="kpi-sub">têm ações disparando</div>
         <span class="badge badge-up">86,1% dos ativados</span>
@@ -315,25 +339,25 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPI Row 2: Engajamento -->
     <div class="kpi-row kpi-auto" style="margin-bottom:20px">
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">MAA (Mai/26)</div>
+        <div class="kpi-label">MAA (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['maa'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8">1.545</div>
         <div class="kpi-sub">contas com ações no mês</div>
         <span class="badge badge-up">+62,5% vs Jan/25</span>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">Execuções (Mai/26)</div>
+        <div class="kpi-label">Execuções (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['execucoes'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8">3,2M</div>
         <div class="kpi-sub">ações disparadas no mês</div>
         <span class="badge badge-up">↑ tendência crescente</span>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
-        <div class="kpi-label">TTFV Mediana</div>
+        <div class="kpi-label">TTFV Mediana <i class="info-icon sm" onmouseenter="showTip(this,INFO['ttfv-median'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#d97706">90 dias</div>
         <div class="kpi-sub">acesso → 1ª regra criada</div>
         <span class="badge badge-orange">74,4% nunca ativou</span>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Regras Ativas (Mai/26)</div>
+        <div class="kpi-label">Regras Ativas (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-ativas'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a">6.485</div>
         <div class="kpi-sub">de 14.535 cadastradas</div>
         <span class="badge badge-up">68,8% com execuções</span>
@@ -344,25 +368,25 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:0.05em;color:#9ca3af;margin-bottom:8px;margin-top:4px">Receita</div>
     <div class="kpi-row kpi-auto" style="margin-bottom:8px">
       <div class="kpi" style="border-left:4px solid #6B21A8">
-        <div class="kpi-label">MRR (Mai/26)</div>
+        <div class="kpi-label">MRR (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['mrr'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#6B21A8">R$ 42,3k</div>
         <div class="kpi-sub">receita recorrente mensal</div>
         <span class="badge badge-up">+112% vs Jan/25</span>
       </div>
       <div class="kpi" style="border-left:4px solid #6B21A8">
-        <div class="kpi-label">Contas Pagantes</div>
+        <div class="kpi-label">Contas Pagantes <i class="info-icon sm" onmouseenter="showTip(this,INFO['contas-pagantes'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#6B21A8">585</div>
         <div class="kpi-sub">de 1.804 adotantes (32%)</div>
         <span class="badge badge-up">+63% vs Jan/25</span>
       </div>
       <div class="kpi" style="border-left:4px solid #6B21A8">
-        <div class="kpi-label">ARPA (Mai/26)</div>
+        <div class="kpi-label">ARPA (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['arpa'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#6B21A8">R$ 72,34</div>
         <div class="kpi-sub">receita média por conta</div>
         <span class="badge badge-up">+37% vs Jan/25</span>
       </div>
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Gap de Cobrança (Mai/26)</div>
+        <div class="kpi-label">Gap de Cobrança (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-cobranca'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">518 contas</div>
         <div class="kpi-sub">uso >50 ações/mês sem cobrança</div>
         <span class="badge badge-down">R$ 86,0k potencial não capturado</span>
@@ -373,12 +397,12 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- Mini charts -->
     <div class="charts-grid grid-2" style="margin-bottom:20px">
       <div class="chart-card">
-        <div class="chart-title">Funil de Adoção — % do Portfólio</div>
+        <div class="chart-title">Funil de Adoção — % do Portfólio <i class="info-icon sm" onmouseenter="showTip(this,INFO['adocao'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Proporção do portfólio Qive por estágio</div>
         <canvas id="exec-funil"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">MAA — Evolução Mensal</div>
+        <div class="chart-title">MAA — Evolução Mensal <i class="info-icon sm" onmouseenter="showTip(this,INFO['maa-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Contas com ao menos 1 ação disparada no mês</div>
         <canvas id="exec-maa"></canvas>
       </div>
@@ -430,19 +454,19 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <div class="charts-grid grid-2">
       <div class="chart-card">
-        <div class="chart-title">Conversão Interesse → Ativação por Segmento</div>
+        <div class="chart-title">Conversão Interesse → Ativação por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['ativacao'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">% de quem acessou e criou ao menos 1 regra</div>
         <canvas id="funil-conv1"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Adoção como % do Portfólio por Segmento</div>
+        <div class="chart-title">Adoção como % do Portfólio por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['adocao'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">% do portfólio do segmento com ações disparando</div>
         <canvas id="funil-adocao"></canvas>
       </div>
     </div>
 
     <div class="chart-card">
-      <div class="chart-title">Funil por Segmento — Volume Absoluto</div>
+      <div class="chart-title">Funil por Segmento — Volume Absoluto <i class="info-icon sm" onmouseenter="showTip(this,INFO['portfolio-qive'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Contas em cada estágio por segmento</div>
       <canvas id="funil-seg-bar" style="max-height:260px"></canvas>
     </div>
@@ -463,25 +487,25 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <div class="kpi-row kpi-row-4" style="margin-bottom:20px">
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Nunca Ativaram</div>
+        <div class="kpi-label">Nunca Ativaram <i class="info-icon sm" onmouseenter="showTip(this,INFO['nunca-ativaram'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">5.345</div>
         <div class="kpi-sub">acessaram mas não criaram regra</div>
         <span class="badge badge-down">74,4% dos que acessaram</span>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Ativaram</div>
+        <div class="kpi-label">Ativaram <i class="info-icon sm" onmouseenter="showTip(this,INFO['ativaram'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a">638</div>
         <div class="kpi-sub">acessaram e depois criaram regra</div>
         <span class="badge badge-up">25,6% dos que acessaram</span>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
-        <div class="kpi-label">TTFV Mediana</div>
+        <div class="kpi-label">TTFV Mediana <i class="info-icon sm" onmouseenter="showTip(this,INFO['ttfv-funil'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#d97706">90 dias</div>
         <div class="kpi-sub">acesso → 1ª regra criada</div>
         <span class="badge badge-orange">distribuição assimétrica</span>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">Ativação 1ª Semana</div>
+        <div class="kpi-label">Ativação 1ª Semana <i class="info-icon sm" onmouseenter="showTip(this,INFO['ativacao-semana'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8">114</div>
         <div class="kpi-sub">Dia 0 + 1–7 dias após acesso</div>
         <span class="badge badge-blue">17,9% dos ativados</span>
@@ -490,19 +514,19 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <div class="charts-grid grid-2">
       <div class="chart-card">
-        <div class="chart-title">Distribuição de TTFV</div>
+        <div class="chart-title">Distribuição de TTFV <i class="info-icon" onclick="showAutoInfo('ttfv-analise')">ℹ</i></div>
         <div class="chart-sub">Contas ativadas por bucket de tempo (acesso → 1ª regra)</div>
         <canvas id="ttfv-dist"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Ativação Acumulada</div>
+        <div class="chart-title">Ativação Acumulada <i class="info-icon sm" onmouseenter="showTip(this,INFO['ativacao-acum'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">% dos ativados que converteram até cada bucket</div>
         <canvas id="ttfv-cum"></canvas>
       </div>
     </div>
 
     <div class="chart-card" style="margin-bottom:0">
-      <div class="chart-title">TTFV Mediana por Segmento (dias)</div>
+      <div class="chart-title">TTFV Mediana por Segmento (dias) <i class="info-icon sm" onmouseenter="showTip(this,INFO['ttfv-segmento'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Tempo mediano até criar a primeira regra após o primeiro acesso</div>
       <canvas id="ttfv-seg" style="max-height:180px"></canvas>
     </div>
@@ -522,53 +546,53 @@ tbody td { padding: 9px 16px; color: #374151; }
   <div class="content">
     <div class="kpi-row kpi-row-5" style="margin-bottom:20px">
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">MAA (Mai/26)</div>
+        <div class="kpi-label">MAA (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['maa-eng'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-maa">1.545</div>
         <div class="kpi-sub">contas com ações no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">Execuções (Mai/26)</div>
+        <div class="kpi-label">Execuções (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['exec-eng'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-exec">3,2M</div>
         <div class="kpi-sub">ações disparadas no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Regras Ativas (Mai/26)</div>
+        <div class="kpi-label">Regras Ativas (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-ativas-eng'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a" id="eng-kpi-regras">6.485</div>
         <div class="kpi-sub">dispararam ações no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Média Exec/Conta (Mai/26)</div>
+        <div class="kpi-label">Média Exec/Conta (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['media-exec-conta'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a" id="eng-kpi-avg">2.099</div>
         <div class="kpi-sub">exec ÷ MAA no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
-        <div class="kpi-label">Novas Adoções (Mai/26)</div>
+        <div class="kpi-label">Novas Adoções (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['novas-adocoes'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#d97706" id="eng-kpi-novas">50</div>
         <div class="kpi-sub">1ª ação disparada no mês</div>
       </div>
     </div>
 
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">MAA — Contas Ativas por Mês</div>
+      <div class="chart-title">MAA — Contas Ativas por Mês <i class="info-icon sm" onmouseenter="showTip(this,INFO['maa-chart'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Total de contas com ao menos 1 ação disparada no mês</div>
       <canvas id="eng-maa" style="max-height:200px"></canvas>
     </div>
 
     <div class="charts-grid grid-2">
       <div class="chart-card">
-        <div class="chart-title">Execuções Mensais</div>
+        <div class="chart-title">Execuções Mensais <i class="info-icon sm" onmouseenter="showTip(this,INFO['exec-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Total de ações disparadas por mês</div>
         <canvas id="eng-exec"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Regras Ativas por Mês</div>
+        <div class="chart-title">Regras Ativas por Mês <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Regras distintas com execuções no mês</div>
         <canvas id="eng-regras"></canvas>
       </div>
     </div>
 
     <div class="chart-card" style="margin-bottom:0">
-      <div class="chart-title">Novas Adoções por Mês</div>
+      <div class="chart-title">Novas Adoções por Mês <i class="info-icon sm" onmouseenter="showTip(this,INFO['novas-adocoes-chart'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Contas que dispararam ações pela primeira vez no mês</div>
       <canvas id="eng-novas" style="max-height:160px"></canvas>
     </div>
@@ -583,31 +607,31 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPIs -->
     <div class="kpi-row kpi-auto" style="margin-bottom:16px">
       <div class="kpi" style="border-left:4px solid #6B21A8">
-        <div class="kpi-label">MRR (Mai/26)</div>
+        <div class="kpi-label">MRR (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['mrr-rec'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#6B21A8">R$ 42,3k</div>
         <div class="kpi-sub">receita recorrente mensal</div>
         <span class="badge badge-up">+112% vs Jan/25</span>
       </div>
       <div class="kpi" style="border-left:4px solid #6B21A8">
-        <div class="kpi-label">Contas Pagantes (Mai/26)</div>
+        <div class="kpi-label">Contas Pagantes (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['contas-pag-rec'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#6B21A8">585</div>
         <div class="kpi-sub">assinantes ativos no mês</div>
         <span class="badge badge-up">+63% vs Jan/25 (358)</span>
       </div>
       <div class="kpi" style="border-left:4px solid #6B21A8">
-        <div class="kpi-label">ARPA (Mai/26)</div>
+        <div class="kpi-label">ARPA (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['arpa-rec'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#6B21A8">R$ 72,34</div>
         <div class="kpi-sub">receita média por conta</div>
         <span class="badge badge-up">+37% vs Jan/25 (R$52,77)</span>
       </div>
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Churned (histórico)</div>
+        <div class="kpi-label">Churned (histórico) <i class="info-icon sm" onmouseenter="showTip(this,INFO['churned-rec'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">118</div>
         <div class="kpi-sub">de 714 que já pagaram</div>
         <span class="badge badge-down">16,5% histórico</span>
       </div>
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">MRR Perdido (churn)</div>
+        <div class="kpi-label">MRR Perdido (churn) <i class="info-icon sm" onmouseenter="showTip(this,INFO['mrr-perdido-rec'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">R$ 9,6k</div>
         <div class="kpi-sub">último MRR antes do churn · mediana R$42,19</div>
         <span class="badge badge-down">22,7% do MRR atual</span>
@@ -616,19 +640,19 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- MRR trend -->
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">MRR — Evolução Mensal</div>
+      <div class="chart-title">MRR — Evolução Mensal <i class="info-icon sm" onmouseenter="showTip(this,INFO['mrr-chart'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Receita recorrente total do produto Automações</div>
       <canvas id="rec-mrr" style="max-height:200px"></canvas>
     </div>
 
     <div class="charts-grid grid-2">
       <div class="chart-card">
-        <div class="chart-title">Contas Pagantes por Mês</div>
+        <div class="chart-title">Contas Pagantes por Mês <i class="info-icon sm" onmouseenter="showTip(this,INFO['contas-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Assinantes ativos com MRR no período</div>
         <canvas id="rec-contas"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">ARPA — Evolução Mensal</div>
+        <div class="chart-title">ARPA — Evolução Mensal <i class="info-icon sm" onmouseenter="showTip(this,INFO['arpa-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Receita média por conta ativa</div>
         <canvas id="rec-arpa"></canvas>
       </div>
@@ -636,7 +660,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- MRR por segmento -->
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">MRR por Segmento</div>
+      <div class="chart-title">MRR por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['mrr-segmento'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Receita mensal empilhada por segmento</div>
       <canvas id="rec-seg" style="max-height:220px"></canvas>
     </div>
@@ -649,7 +673,7 @@ tbody td { padding: 9px 16px; color: #374151; }
   <div class="content">
     <!-- Quadrant explanation table -->
     <div class="chart-card" style="margin-bottom:20px">
-      <div class="chart-title" style="margin-bottom:14px">📐 Definição dos Quadrantes</div>
+      <div class="chart-title" style="margin-bottom:14px">📐 Definição dos Quadrantes <i class="info-icon" onclick="showAutoInfo('quadrant-def')">ℹ</i></div>
       <div style="overflow-x:auto">
         <table style="font-size:12px;border-collapse:collapse;width:100%">
           <thead>
@@ -663,28 +687,28 @@ tbody td { padding: 9px 16px; color: #374151; }
           </thead>
           <tbody>
             <tr style="border-bottom:1px solid #f3f4f6">
-              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><b>Champion</b></span></td>
+              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#16a34a;flex-shrink:0"></span><b>Champion <i class="info-icon sm" onmouseenter="showTip(this,INFO['champion'])" onmouseleave="hideTip()">ℹ</i></b></span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Alto<br><span style="color:#9ca3af">≥ 76 ações/mês</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Alto<br><span style="color:#9ca3af">≥ 2 automações</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Uso intenso e amplo. Melhor perfil de retenção. Candidatos naturais a expansão de plano.</td>
               <td style="padding:10px 14px;color:#374151">Upsell · Casos de sucesso · Referências</td>
             </tr>
             <tr style="border-bottom:1px solid #f3f4f6;background:#fffbeb">
-              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#d97706;flex-shrink:0"></span><b>Explorador</b></span></td>
+              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#d97706;flex-shrink:0"></span><b>Explorador <i class="info-icon sm" onmouseenter="showTip(this,INFO['explorador'])" onmouseleave="hideTip()">ℹ</i></b></span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Baixo<br><span style="color:#9ca3af">&lt; 76 ações/mês</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Alto<br><span style="color:#9ca3af">≥ 2 automações</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Configurou várias automações mas ainda não gera volume. Potencial não realizado — falta trigger de uso real.</td>
               <td style="padding:10px 14px;color:#374151">Ativação · Orientação de uso · CSM proativo</td>
             </tr>
             <tr style="border-bottom:1px solid #f3f4f6;background:#eff6ff">
-              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#1d4ed8;flex-shrink:0"></span><b>Dependente</b></span></td>
+              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#1d4ed8;flex-shrink:0"></span><b>Dependente <i class="info-icon sm" onmouseenter="showTip(this,INFO['dependente'])" onmouseleave="hideTip()">ℹ</i></b></span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Alto<br><span style="color:#9ca3af">≥ 76 ações/mês</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Baixo<br><span style="color:#9ca3af">&lt; 2 automações</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Uso intenso concentrado em 1 regra. Risco se a automação falhar ou mudar de lógica.</td>
               <td style="padding:10px 14px;color:#374151">Diversificação · Mostrar outros casos de uso</td>
             </tr>
             <tr>
-              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#dc2626;flex-shrink:0"></span><b>Em Risco</b></span></td>
+              <td style="padding:10px 14px;border-right:1px solid #f3f4f6"><span style="display:inline-flex;align-items:center;gap:6px"><span style="width:10px;height:10px;border-radius:50%;background:#dc2626;flex-shrink:0"></span><b>Em Risco <i class="info-icon sm" onmouseenter="showTip(this,INFO['em-risco'])" onmouseleave="hideTip()">ℹ</i></b></span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Baixo<br><span style="color:#9ca3af">&lt; 76 ações/mês</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Baixo<br><span style="color:#9ca3af">&lt; 2 automações</span></td>
               <td style="padding:10px 14px;color:#374151;border-right:1px solid #f3f4f6">Pouca regra, pouco volume. Baixo engajamento, candidatos a churn comportamental.</td>
@@ -699,25 +723,25 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPI row -->
     <div class="kpi-row kpi-auto" style="margin-bottom:20px">
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Champion</div>
+        <div class="kpi-label">Champion <i class="info-icon sm" onmouseenter="showTip(this,INFO['champion'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a">664</div>
         <div class="kpi-sub">36,8% das contas ativas</div>
         <span class="badge badge-up">Mediana: 472 exec · 4 regras</span>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
-        <div class="kpi-label">Explorador</div>
+        <div class="kpi-label">Explorador <i class="info-icon sm" onmouseenter="showTip(this,INFO['explorador'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#d97706">390</div>
         <div class="kpi-sub">21,6% das contas ativas</div>
         <span class="badge badge-orange">Mediana: 26 exec · 2 regras</span>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">Dependente</div>
+        <div class="kpi-label">Dependente <i class="info-icon sm" onmouseenter="showTip(this,INFO['dependente'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8">242</div>
         <div class="kpi-sub">13,4% das contas ativas</div>
         <span class="badge badge-blue">Mediana: 198 exec · 1 regra</span>
       </div>
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Em Risco</div>
+        <div class="kpi-label">Em Risco <i class="info-icon sm" onmouseenter="showTip(this,INFO['em-risco'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">508</div>
         <div class="kpi-sub">28,2% das contas ativas</div>
         <span class="badge badge-down">Mediana: 11 exec · 1 regra</span>
@@ -726,21 +750,21 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- Scatter plot -->
     <div class="chart-card" style="margin-bottom:20px">
-      <div class="chart-title">Mapa de Quadrante — Contas por Volume de Ações × Automações Ativas</div>
+      <div class="chart-title">Mapa de Quadrante — Contas por Volume de Ações × Automações Ativas <i class="info-icon" onclick="showAutoInfo('quadrant-def')">ℹ</i></div>
       <div class="chart-sub">Eixo X em escala logarítmica · Linhas tracejadas = medianas (76 ações/mês, 2 automações) · Amostra de 80 contas por quadrante</div>
       <div style="position:relative;height:380px"><canvas id="quadrant-scatter"></canvas></div>
     </div>
 
     <!-- By segment -->
     <div class="chart-card" style="margin-bottom:20px">
-      <div class="chart-title">Distribuição por Segmento e Quadrante</div>
+      <div class="chart-title">Distribuição por Segmento e Quadrante <i class="info-icon sm" onmouseenter="showTip(this,INFO['quadrant-seg'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Volume de contas em cada quadrante por segmento (apenas contas com ações)</div>
       <canvas id="quadrant-seg-bar" style="max-height:240px;margin-top:14px"></canvas>
     </div>
 
     <!-- MRR por Quadrante -->
     <div class="chart-card" style="margin-bottom:0">
-      <div class="chart-title">MRR por Quadrante (Mai/26)</div>
+      <div class="chart-title">MRR por Quadrante (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['quadrant-mrr'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Receita cruzada com o perfil de engajamento · apenas contas com MRR no mês</div>
       <div style="overflow-x:auto;margin-top:14px">
         <table style="font-size:12px;border-collapse:collapse;width:100%">
@@ -820,31 +844,31 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPIs -->
     <div class="kpi-row kpi-auto" style="margin-bottom:16px">
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Contas no Gap (Mai/26)</div>
+        <div class="kpi-label">Contas no Gap (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-contas'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">518</div>
         <div class="kpi-sub">uso >50 ações sem cobrança</div>
         <span class="badge badge-down">vs 585 pagantes no mês</span>
       </div>
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">MRR Potencial (Mai/26)</div>
+        <div class="kpi-label">MRR Potencial (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-mrr-pot'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">R$ 86,0k</div>
         <div class="kpi-sub">estimado pela tabela de preços</div>
         <span class="badge badge-down">+36% do MRR atual</span>
       </div>
       <div class="kpi" style="border-left:4px solid #f59e0b">
-        <div class="kpi-label">Recorrentes (3+ meses)</div>
+        <div class="kpi-label">Recorrentes (3+ meses) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-recorrentes'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#f59e0b">783</div>
         <div class="kpi-sub">contas com gap em ≥ 3 meses</div>
         <span class="badge badge-orange">muitas há 17 meses</span>
       </div>
       <div class="kpi" style="border-left:4px solid #7c3aed">
-        <div class="kpi-label">Custo Absorvido (Mai/26)</div>
+        <div class="kpi-label">Custo Absorvido (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-custo'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#7c3aed">R$ 5.064</div>
         <div class="kpi-sub">custo real sem receita · 2,6M ações</div>
         <span class="badge" style="background:#f5f3ff;color:#7c3aed">R$ 9,77/conta/mês</span>
       </div>
       <div class="kpi" style="border-left:4px solid #059669">
-        <div class="kpi-label">Margem Líquida Potencial</div>
+        <div class="kpi-label">Margem Líquida Potencial <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-margem'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#059669">R$ 80,9k</div>
         <div class="kpi-sub">após cobrir custos de execução</div>
         <span class="badge badge-up">94,1% de margem sobre MRR</span>
@@ -853,7 +877,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- Histórico -->
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">Evolução do Gap — Contas e MRR Potencial</div>
+      <div class="chart-title">Evolução do Gap — Contas e MRR Potencial <i class="info-icon" onclick="showAutoInfo('gap-metodologia')">ℹ</i></div>
       <div class="chart-sub">Contas com >50 ações sem cobrança e receita potencial estimada por mês</div>
       <canvas id="gap-hist" style="max-height:220px"></canvas>
     </div>
@@ -861,12 +885,12 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- Faixa + Segmento -->
     <div class="charts-grid grid-2">
       <div class="chart-card">
-        <div class="chart-title">Distribuição por Faixa de Consumo (Mai/26)</div>
+        <div class="chart-title">Distribuição por Faixa de Consumo (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-faixa'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Contas e MRR potencial por plano equivalente</div>
         <canvas id="gap-faixa"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Gap por Segmento (Mai/26)</div>
+        <div class="chart-title">Gap por Segmento (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-seg'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Volume de contas e MRR potencial por segmento</div>
         <canvas id="gap-seg"></canvas>
       </div>
@@ -876,7 +900,7 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="chart-card" style="margin-bottom:0">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
         <div>
-          <div class="chart-title" style="margin-bottom:2px">Contas no Gap (Mai/26)</div>
+          <div class="chart-title" style="margin-bottom:2px">Contas no Gap (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gap-contas'])" onmouseleave="hideTip()">ℹ</i></div>
           <div class="chart-sub">Ordenadas por volume de execuções · Meses recorrentes = nº de meses com >50 ações sem cobrança</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
@@ -927,25 +951,25 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="insight-note" style="margin-bottom:16px">
       <strong>Como é calculado:</strong> Score 0–100 composto por três dimensões normalizadas em percentil:
       <b>Margem Líquida</b> (40%) · <b>Meses Recorrentes no Gap</b> (35%) · <b>Execuções Mai/26</b> (25%).
-      Contas com score ≥ 70 são <b style="color:#dc2626">Alta Prioridade</b>, 40–69 são <b style="color:#f59e0b">Média</b> e abaixo de 40 são <b style="color:#6b7280">Baixa</b>.
+      Contas com score ≥ 70 são <b style="color:#dc2626">Alta Prioridade <i class="info-icon sm" onmouseenter="showTip(this,INFO['score-alta'])" onmouseleave="hideTip()">ℹ</i></b>, 40–69 são <b style="color:#f59e0b">Média</b> e abaixo de 40 são <b style="color:#6b7280">Baixa</b>.
     </div>
 
     <!-- KPI tiers -->
     <div class="kpi-row kpi-auto" style="margin-bottom:16px">
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Alta Prioridade</div>
+        <div class="kpi-label">Alta Prioridade <i class="info-icon sm" onmouseenter="showTip(this,INFO['score-alta'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" id="score-kpi-alta" style="color:#dc2626">—</div>
         <div class="kpi-sub" id="score-kpi-alta-mrr">score ≥ 70</div>
         <span class="badge badge-down">Contato imediato</span>
       </div>
       <div class="kpi" style="border-left:4px solid #f59e0b">
-        <div class="kpi-label">Média Prioridade</div>
+        <div class="kpi-label">Média Prioridade <i class="info-icon sm" onmouseenter="showTip(this,INFO['score-media'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" id="score-kpi-media" style="color:#f59e0b">—</div>
         <div class="kpi-sub" id="score-kpi-media-mrr">score 40–69</div>
         <span class="badge badge-orange">Próximo ciclo</span>
       </div>
       <div class="kpi" style="border-left:4px solid #6b7280">
-        <div class="kpi-label">Baixa Prioridade</div>
+        <div class="kpi-label">Baixa Prioridade <i class="info-icon sm" onmouseenter="showTip(this,INFO['score-baixa'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" id="score-kpi-baixa" style="color:#6b7280">—</div>
         <div class="kpi-sub" id="score-kpi-baixa-mrr">score &lt; 40</div>
         <span class="badge" style="background:#f3f4f6;color:#6b7280">Monitorar</span>
@@ -954,7 +978,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- Distribuição de scores -->
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">Distribuição dos Scores</div>
+      <div class="chart-title">Distribuição dos Scores <i class="info-icon" onclick="showAutoInfo('score-cs-modelo')">ℹ</i></div>
       <div class="chart-sub">Número de contas por faixa de score (0–100)</div>
       <canvas id="score-dist" style="max-height:180px"></canvas>
     </div>
@@ -963,7 +987,7 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="chart-card" style="margin-bottom:0">
       <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px;margin-bottom:4px">
         <div>
-          <div class="chart-title" style="margin-bottom:2px">Lista de Priorização para CS</div>
+          <div class="chart-title" style="margin-bottom:2px">Lista de Priorização para CS <i class="info-icon" onclick="showAutoInfo('score-cs-modelo')">ℹ</i></div>
           <div class="chart-sub">Ordenada por score decrescente · clique nos filtros para segmentar</div>
         </div>
         <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;flex-shrink:0">
@@ -1034,7 +1058,7 @@ tbody td { padding: 9px 16px; color: #374151; }
       <div class="chart-card" style="border-top:4px solid #dc2626">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
           <span style="font-size:18px">💳</span>
-          <div class="chart-title" style="margin:0">Vetor 1 — Regularização do Gap</div>
+          <div class="chart-title" style="margin:0">Vetor 1 — Regularização do Gap <i class="info-icon" onclick="showAutoInfo('simulador-metodologia')">ℹ</i></div>
         </div>
         <div class="chart-sub" style="margin-bottom:16px">% das 518 contas no gap que passam a ser cobradas, aplicado pelas de maior score primeiro</div>
 
@@ -1064,7 +1088,7 @@ tbody td { padding: 9px 16px; color: #374151; }
       <div class="chart-card" style="border-top:4px solid #1d4ed8">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
           <span style="font-size:18px">🚀</span>
-          <div class="chart-title" style="margin:0">Vetor 2 — Ativação → Receita</div>
+          <div class="chart-title" style="margin:0">Vetor 2 — Ativação → Receita <i class="info-icon sm" onmouseenter="showTip(this,INFO['sim-vetor2'])" onmouseleave="hideTip()">ℹ</i></div>
         </div>
         <div class="chart-sub" style="margin-bottom:16px">% das 5.088 contas não ativadas que criam sua primeira regra e percorrem o funil (86% adotam → 32% pagam · ARPA R$72,34)</div>
 
@@ -1141,24 +1165,24 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPIs -->
     <div class="kpi-row kpi-auto" style="margin-bottom:16px">
       <div class="kpi" style="border-left:4px solid #1a1a2e">
-        <div class="kpi-label">Total de Regras</div>
+        <div class="kpi-label">Total de Regras <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-total'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1a1a2e">14.535</div>
         <div class="kpi-sub">cadastradas na plataforma</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
-        <div class="kpi-label">Regras Ativas</div>
+        <div class="kpi-label">Regras Ativas <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-ativas-reg'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#16a34a">11.772</div>
         <div class="kpi-sub">81,0% do total</div>
         <span class="badge badge-up">disparando execuções</span>
       </div>
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Regras Inativas</div>
+        <div class="kpi-label">Regras Inativas <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-inativas'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">2.763</div>
         <div class="kpi-sub">19,0% do total</div>
         <span class="badge badge-down">criadas mas desativadas</span>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
-        <div class="kpi-label">Contas com Regras</div>
+        <div class="kpi-label">Contas com Regras <i class="info-icon sm" onmouseenter="showTip(this,INFO['contas-regras'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#1d4ed8">2.095</div>
         <div class="kpi-sub">média de 6,9 regras/conta</div>
         <span class="badge badge-blue">de 2.095 ativados</span>
@@ -1168,12 +1192,12 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- Distribuição + Inativação -->
     <div class="charts-grid grid-2" style="margin-bottom:16px">
       <div class="chart-card">
-        <div class="chart-title">Profundidade de Uso — Regras por Conta</div>
+        <div class="chart-title">Profundidade de Uso — Regras por Conta <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-profundidade'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Distribuição das contas pelo número total de regras cadastradas</div>
         <canvas id="reg-dist" style="max-height:220px"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Taxa de Inativação por Segmento</div>
+        <div class="chart-title">Taxa de Inativação por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-inativacao'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">% de regras desativadas sobre o total do segmento</div>
         <canvas id="reg-inativ" style="max-height:220px"></canvas>
       </div>
@@ -1181,7 +1205,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- Correlação -->
     <div class="chart-card" style="margin-bottom:16px">
-      <div class="chart-title">Regras Ativas → Execuções (Mai/26)</div>
+      <div class="chart-title">Regras Ativas → Execuções (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-correlacao'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="chart-sub">Mediana de execuções mensais por faixa de regras ativas — contas com mais regras ativas executam significativamente mais</div>
       <div class="insight-note" style="margin-top:8px;margin-bottom:12px">
         <strong>Insight:</strong> Cada faixa adicional de regras ativas está associada a um salto expressivo no volume de uso. Contas com 100+ regras ativas têm mediana 80× maior que contas com apenas 1 regra ativa.
@@ -1191,7 +1215,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- Evolução -->
     <div class="chart-card" style="margin-bottom:0">
-      <div class="chart-title">Evolução Mensal — Criação de Regras</div>
+      <div class="chart-title">Evolução Mensal — Criação de Regras <i class="info-icon" onclick="showAutoInfo('regras-analise')">ℹ</i></div>
       <div class="chart-sub">Regras criadas e contas únicas que criaram ao menos uma regra no mês · Jan/25–Mai/26</div>
       <div class="insight-note" style="margin-top:8px;margin-bottom:12px">
         <strong>⚠️ Fev/26:</strong> spike de 1.134 regras criadas — 2 contas respondem por 671 (59% do mês). Desconsiderando essas contas, o mês seria de ~463 regras, em linha com a tendência.
@@ -1216,17 +1240,17 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- KPIs -->
     <div class="kpi-row kpi-row-3" style="margin-bottom:24px">
       <div class="kpi" style="border-left:4px solid #dc2626">
-        <div class="kpi-label">Contas em Overflow</div>
+        <div class="kpi-label">Contas em Overflow <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-overflow-contas'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#dc2626">59</div>
         <div class="kpi-sub">acima do limite contratado</div>
       </div>
       <div class="kpi" style="border-left:4px solid #059669">
-        <div class="kpi-label">MRR Potencial de Expansão</div>
+        <div class="kpi-label">MRR Potencial de Expansão <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-mrr-pot'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#059669">R$6.678</div>
         <div class="kpi-sub">receita adicional estimada/mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
-        <div class="kpi-label">Mediana de Overflow</div>
+        <div class="kpi-label">Mediana de Overflow <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-mediana'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="kpi-value" style="color:#d97706">85,1%</div>
         <div class="kpi-sub">acima do limite contratado</div>
       </div>
@@ -1235,12 +1259,12 @@ tbody td { padding: 9px 16px; color: #374151; }
     <!-- Charts row -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
       <div class="chart-card">
-        <div class="chart-title">MRR Potencial por Segmento</div>
+        <div class="chart-title">MRR Potencial por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-seg-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Receita adicional estimada por segmento · Mai/2026</div>
         <canvas id="exp-seg-chart" style="max-height:220px"></canvas>
       </div>
       <div class="chart-card">
-        <div class="chart-title">Contas &amp; MRR por Tier Atual</div>
+        <div class="chart-title">Contas &amp; MRR por Tier Atual <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-tier-chart'])" onmouseleave="hideTip()">ℹ</i></div>
         <div class="chart-sub">Distribuição de contas em overflow por faixa de tier contratado</div>
         <canvas id="exp-tier-chart" style="max-height:220px"></canvas>
       </div>
@@ -1250,7 +1274,7 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="chart-card" style="padding:0;overflow:hidden">
       <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid #f3f4f6">
         <div>
-          <div class="chart-title" style="margin-bottom:2px">Contas em Overflow</div>
+          <div class="chart-title" style="margin-bottom:2px">Contas em Overflow <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-overflow-contas'])" onmouseleave="hideTip()">ℹ</i></div>
           <div class="chart-sub">Contas pagantes que ultrapassaram o limite do tier contratado · Média últimos 6 meses</div>
         </div>
         <span id="exp-page-info" style="font-size:12px;color:#9ca3af;white-space:nowrap"></span>
@@ -1289,30 +1313,30 @@ tbody td { padding: 9px 16px; color: #374151; }
   <!-- KPIs -->
   <div class="kpi-row kpi-row-5" style="margin-bottom:24px">
     <div class="kpi" style="border-left:4px solid #2563eb">
-      <div class="kpi-label">GdP Ativos (Mai/26)</div>
+      <div class="kpi-label">GdP Ativos (Mai/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-ativos'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="kpi-value" style="color:#2563eb">1.297</div>
       <div class="kpi-sub">assinantes ativos de Gestão de Pagamentos</div>
     </div>
     <div class="kpi" style="border-left:4px solid #7c3aed">
-      <div class="kpi-label">Com Automações Criadas</div>
+      <div class="kpi-label">Com Automações Criadas <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-criadas'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="kpi-value" style="color:#7c3aed">262</div>
       <div class="kpi-sub">20,2% da base GdP</div>
       <span class="badge" style="background:#f5f3ff;color:#7c3aed">79,8% nunca ativaram</span>
     </div>
     <div class="kpi" style="border-left:4px solid #dc2626">
-      <div class="kpi-label">GAP Qualificado</div>
+      <div class="kpi-label">GAP Qualificado <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-gap'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="kpi-value" style="color:#dc2626">167</div>
       <div class="kpi-sub">usam Automações mas não pagam</div>
       <span class="badge badge-orange">180k execuções/mês</span>
     </div>
     <div class="kpi" style="border-left:4px solid #059669">
-      <div class="kpi-label">Já Convertidos</div>
+      <div class="kpi-label">Já Convertidos <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-convertidos'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="kpi-value" style="color:#059669">61</div>
       <div class="kpi-sub">pagam GdP + Automações</div>
       <span class="badge badge-up">4,7% conversão</span>
     </div>
     <div class="kpi" style="border-left:4px solid #f59e0b">
-      <div class="kpi-label">Nunca Ativaram</div>
+      <div class="kpi-label">Nunca Ativaram <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-nunca'])" onmouseleave="hideTip()">ℹ</i></div>
       <div class="kpi-value" style="color:#f59e0b">1.035</div>
       <div class="kpi-sub">R$ 404k MRR GdP sem automação</div>
       <span class="badge badge-orange">oportunidade de ativação</span>
@@ -3544,6 +3568,229 @@ function closeChangelog() {
 document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeChangelog();
 });
+
+
+// ═══════════════════════════════════════════════════════════════
+// INFO ICONS — tooltips e modais
+// ═══════════════════════════════════════════════════════════════
+const INFO = {
+  // ── Sumário Executivo ──────────────────────────────────────
+  'portfolio-qive':'Total de contas únicas com ao menos 1 regra cadastrada no produto Automações — independente de pagamento ou uso ativo.',
+  'interesse':'Contas que criaram ao menos 1 regra de automação — demonstraram intenção de uso, mas podem não ter executado nenhuma ação ainda.',
+  'ativacao':'Contas que dispararam ao menos 1 execução de automação — ultrapassaram a barreira de configuração e viram valor real no produto.',
+  'adocao':'Contas com execuções ativas em Mai/26 — usam o produto de forma recorrente no mês de referência.',
+  'maa':'MAA (Monthly Active Accounts): contas com ao menos 1 execução de automação em Mai/26. Métrica principal de engajamento ativo.',
+  'execucoes':'Total de execuções de automações disparadas por contas ativas em Mai/26. Reflete o volume de uso do produto.',
+  'ttfv-median':'TTFV (Time To First Value) mediano: tempo em dias entre o cadastro da conta e a primeira execução de automação. Indica a velocidade de ativação do produto.',
+  'regras-ativas':'Total de regras de automação com ao menos 1 execução em Mai/26 — indica a profundidade de configuração do portfólio.',
+  'mrr':'Receita Mensal Recorrente do produto Automações em Mai/26 — apenas contas com cobrança ativa.',
+  'contas-pagantes':'Contas com MRR ativo no produto Automações em Mai/26 — já convertidas de uso para pagamento.',
+  'arpa':'ARPA (Average Revenue Per Account): MRR total ÷ contas pagantes. Reflete o ticket médio mensal por conta pagante.',
+  'gap-cobranca':'Contas que usam Automações de forma ativa (≥50 execuções/mês) mas não possuem cobrança ativa — gap de billing identificado.',
+  'mrr-potencial-gap':'MRR estimado que seria gerado se todas as contas no Gap fossem cobradas pelo tier correspondente ao volume de uso atual.',
+  // ── Adoção / Funil ─────────────────────────────────────────
+  'nunca-ativaram':'Contas que cadastraram regras mas nunca dispararam nenhuma execução — falha de ativação. São o maior volume de perda no funil.',
+  'ativaram':'Contas que executaram ao menos 1 automação em qualquer momento histórico. Inclui quem ativou mas deixou de usar.',
+  'ttfv-funil':'TTFV mediano do segmento: tempo em dias entre o cadastro da primeira regra e a primeira execução disparada.',
+  'ativacao-semana':'% de contas que ativaram (primeira execução) dentro de 7 dias após criar a primeira regra — janela crítica de ativação.',
+  // ── TTFV ───────────────────────────────────────────────────
+  'ttfv-dist':'TTFV (Time To First Value): dias entre a criação da primeira regra e o primeiro disparo de execução. Contas no Dia 0 ativaram no mesmo dia que cadastraram — sinal de onboarding eficiente.',
+  'ativacao-acum':'Curva acumulada: percentual do portfólio que já havia disparado a primeira execução até cada janela de tempo. Quanto mais íngreme nos primeiros dias, mais eficiente o processo de ativação.',
+  'ttfv-segmento':'Mediana de TTFV por segmento de mercado. Revela se alguns perfis de conta têm dificuldade maior para sair do cadastro para o primeiro uso real.',
+  // ── Engajamento ────────────────────────────────────────────
+  'maa-eng':'MAA: contas com ao menos 1 execução registrada no mês. Mede o engajamento ativo — não conta contas configuradas mas sem disparos.',
+  'exec-eng':'Execuções totais no mês: soma de todos os disparos de automações pelas contas ativas. Volume absoluto de uso do produto.',
+  'regras-ativas-eng':'Regras com ao menos 1 execução no mês. Indica a amplitude de configuração — contas com mais regras ativas tendem a gerar mais valor.',
+  'media-exec-conta':'Média de execuções por conta ativa no mês. Reflete a intensidade de uso individual — útil para identificar contas power users.',
+  'novas-adocoes':'Contas que dispararam sua primeira execução no mês — entrada líquida de novos usuários ativos no produto.',
+  'maa-chart':'Evolução mensal de contas com ao menos 1 execução. Tendência crescente indica expansão do engajamento ativo.',
+  'exec-chart':'Volume mensal de execuções disparadas. Picos podem indicar sazonalidade ou eventos específicos no portfólio.',
+  'regras-chart':'Total de regras com ao menos 1 execução no mês — mostra se as configurações estão sendo efetivamente utilizadas.',
+  'novas-adocoes-chart':'Contas que ativaram pela primeira vez no mês — novo valor gerado pela entrada de usuários no produto.',
+  // ── Receita ────────────────────────────────────────────────
+  'mrr-rec':'MRR total do produto Automações em Mai/26 — apenas contas com contrato ativo e cobrança vigente.',
+  'contas-pag-rec':'Contas com MRR ativo em Mai/26. Crescimento consistente indica conversão sustentável do gap para pagamento.',
+  'arpa-rec':'ARPA: MRR ÷ contas pagantes. Evolução do ARPA reflete o mix de tiers — contas migrando para planos maiores elevam o ARPA.',
+  'churned-rec':'Total acumulado de contas que cancelaram o produto Automações no histórico disponível.',
+  'mrr-perdido-rec':'MRR acumulado cancelado no histórico — receita que saiu do produto por cancelamentos.',
+  'mrr-chart':'Evolução do MRR mensal de Jan/25 a Mai/26 — Jan/25 representa o ponto base, e cada mês reflete o crescimento acumulado do produto.',
+  'contas-chart':'Evolução de contas pagantes por mês. Crescimento líquido mês a mês indica saúde do processo de conversão.',
+  'arpa-chart':'ARPA mensal: indica se o crescimento vem de volume (mais contas) ou de expansão (upgrade de tier). ARPA crescendo = upsell funcionando.',
+  'mrr-segmento':'MRR de Mai/26 distribuído por segmento de mercado — revela onde a receita está concentrada e onde há espaço de expansão.',
+  // ── Quadrante ──────────────────────────────────────────────
+  'champion':'Champion: contas com alto volume de execuções E alta amplitude de regras ativas — power users do produto, máximo valor extraído.',
+  'explorador':'Explorador: amplitude de regras alta, mas execuções ainda baixas — configuraram bastante, mas o produto ainda não está gerando muito volume.',
+  'dependente':'Dependente: execuções altas, mas concentradas em poucas regras — uso intenso mas estreito, risco de lock-in em um único fluxo.',
+  'em-risco':'Em Risco: baixo volume de execuções E poucas regras ativas — uso mínimo, alto risco de churn. Prioridade de CS.',
+  'quadrant-scatter':'Posiciona cada conta pagante pelos eixos de volume de execuções (eixo X) e amplitude de regras ativas (eixo Y). Os quatro quadrantes revelam o padrão de adoção.',
+  'quadrant-seg':'Distribuição dos quadrantes por segmento — revela se alguns perfis de conta tendem a um padrão de uso específico.',
+  'quadrant-mrr':'MRR concentrado por quadrante. Champions tendem a ter ARPA maior; contas Em Risco representam receita vulnerável a churn.',
+  // ── Gap de Cobrança ────────────────────────────────────────
+  'gap-contas':'Contas que geram mais de 50 execuções/mês mas não possuem MRR ativo no produto Automações — usam sem pagar.',
+  'gap-mrr-pot':'MRR estimado se todas as contas do Gap fossem cobradas pelo tier correspondente ao volume médio de uso dos últimos 3 meses.',
+  'gap-recorrentes':'Contas no Gap há 3 ou mais meses consecutivos — padrão de uso consolidado, máxima prioridade de conversão.',
+  'gap-custo':'Custo total absorvido pela Qive para executar as automações das contas no Gap (R$0,00195867/execução × volume mensal).',
+  'gap-margem':'Margem líquida potencial = MRR potencial − custo de execução das contas no Gap. Indica o valor líquido da conversão.',
+  'gap-evolucao':'Evolução histórica do número de contas e MRR potencial no Gap. Tendência crescente indica que o gap se amplia sem conversão.',
+  'gap-faixa':'Distribuição das contas do Gap por faixa de consumo mensal — identifica onde estão concentradas as maiores oportunidades de MRR.',
+  'gap-seg':'Concentração do Gap por segmento — qual perfil de conta mais usa sem pagar.',
+  // ── Score CS ────────────────────────────────────────────────
+  'score-alta':'Contas com Score ≥ 70 — maior probabilidade de conversão. Combinação de alto volume de uso, recorrência longa e margem positiva.',
+  'score-media':'Contas com Score entre 40 e 69 — perfil intermediário. Uso real, mas volume ou recorrência ainda não consolidados.',
+  'score-baixa':'Contas com Score < 40 — uso esporádico ou margem negativa. Conversão menos atrativa no curto prazo.',
+  'score-dist':'Distribuição dos scores de todas as contas no Gap — quanto mais à direita, maior a concentração de oportunidades qualificadas.',
+  // ── Simulador ──────────────────────────────────────────────
+  'sim-vetor1':'Vetor 1 — Regularização do Gap: estima o MRR adicional se X% das contas do Gap (ordenadas por Score CS, de cima para baixo) fossem convertidas para o tier correspondente ao uso.',
+  'sim-vetor2':'Vetor 2 — Ativação de Novos: estima o MRR adicional se X contas que têm automações criadas mas não usam fossem ativadas, assumindo conversão para o tier base.',
+  // ── Análise de Regras ──────────────────────────────────────
+  'regras-total':'Total de regras cadastradas no produto desde o início — inclui regras ativas, inativas e deletadas que geraram algum histórico.',
+  'regras-ativas-reg':'Regras com ao menos 1 execução em Mai/26 — configurações sendo efetivamente utilizadas no momento de referência.',
+  'regras-inativas':'Regras cadastradas mas sem nenhuma execução em Mai/26 — podem estar pausadas, mal configuradas ou abandonadas.',
+  'contas-regras':'Contas únicas com ao menos 1 regra cadastrada — mede a penetração do recurso de configuração avançada.',
+  'regras-profundidade':'Distribuição de contas por quantidade de regras cadastradas — revela se a maioria usa o produto de forma superficial (1–2 regras) ou profunda (10+ regras).',
+  'regras-inativacao':'% de regras inativas por segmento — segmentos com alta taxa de inativação podem indicar dificuldade de configuração ou regras criadas por impulso sem uso continuado.',
+  'regras-correlacao':'Correlação entre quantidade de regras ativas e volume de execuções por conta em Mai/26. Confirma se mais regras ativas = mais uso real.',
+  'regras-evolucao':'Regras novas criadas por mês — indica o ritmo de adoção e aprofundamento do produto ao longo do tempo.',
+  // ── Expansão ───────────────────────────────────────────────
+  'exp-overflow-contas':'Contas pagantes cujo volume médio de execuções nos últimos 6 meses supera o limite do tier contratado — candidatas a upgrade.',
+  'exp-mrr-pot':'MRR adicional estimado se todas as contas em overflow migrassem para o tier imediatamente superior ao atual.',
+  'exp-mediana':'Mediana do percentual de overflow — indica quanto, em média, as contas excedem seu limite contratado. Ex: 85% = usam 1,85× o limite.',
+  'exp-seg-chart':'MRR potencial de expansão distribuído por segmento — indica onde está concentrada a maior oportunidade de upsell imediato.',
+  'exp-tier-chart':'Distribuição das contas em overflow por tier atual — tiers mais populares em overflow indicam onde o pricing pode estar subdimensionado.',
+  // ── Potencial GdP ──────────────────────────────────────────
+  'gdp-ativos':'Contas com MRR ativo no produto Gestão de Pagamentos em Mai/26 — base total analisada para o potencial de cross-sell de Automações.',
+  'gdp-criadas':'Contas de GdP que criaram ao menos 1 regra de Automações — já descobriram e configuraram o produto, mas podem não estar pagando.',
+  'gdp-gap':'Contas de GdP que usam Automações (executam regularmente) mas não possuem cobrança ativa — oportunidade direta de conversão.',
+  'gdp-convertidos':'Contas de GdP que já pagam tanto GdP quanto Automações — base de referência de conversão real.',
+  'gdp-nunca':'Contas de GdP que nunca criaram nenhuma automação — maior oportunidade de ativação, com MRR GdP significativo já existente.',
+};
+
+const INFO_MODAL = {};
+
+INFO_MODAL['quadrant-def'] = `
+<p>O Mapa de Quadrante classifica as contas pagantes em 4 perfis com base em dois eixos independentes:</p>
+<br>
+<p><b>Eixo X — Volume de Execuções:</b> quantas automações foram disparadas em Mai/26. Alta = acima da mediana do portfólio.</p>
+<p><b>Eixo Y — Amplitude de Regras Ativas:</b> quantas regras distintas dispararam ao menos 1 execução em Mai/26. Alta = acima da mediana.</p>
+<br>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0">
+  <tr style="background:#f0fdf4"><td style="padding:8px 10px"><b style="color:#059669">🏆 Champion</b></td><td style="padding:8px 10px">Alto volume + alta amplitude — extraem o máximo do produto</td></tr>
+  <tr style="background:#eff6ff"><td style="padding:8px 10px"><b style="color:#1d4ed8">🔍 Explorador</b></td><td style="padding:8px 10px">Alta amplitude + baixo volume — configuraram muito, mas o volume ainda não veio</td></tr>
+  <tr style="background:#fefce8"><td style="padding:8px 10px"><b style="color:#d97706">⚡ Dependente</b></td><td style="padding:8px 10px">Alto volume + baixa amplitude — uso intenso concentrado em poucas regras</td></tr>
+  <tr style="background:#fef2f2"><td style="padding:8px 10px"><b style="color:#dc2626">⚠️ Em Risco</b></td><td style="padding:8px 10px">Baixo volume + baixa amplitude — mínimo uso, máxima exposição ao churn</td></tr>
+</table>`;
+
+INFO_MODAL['score-cs-modelo'] = `
+<p>O <b>Score CS</b> classifica cada conta no Gap em uma escala de <b>0 a 100</b>, priorizando quem tem maior probabilidade de conversão E maior impacto financeiro. Quanto maior o score, maior a prioridade de abordagem.</p>
+<br>
+<p><b>📊 Margem Líquida Potencial — 40%</b><br>Percentil da conta no ranking de margem (MRR potencial − custo de execução). Contas com maior margem líquida têm maior retorno para a Qive na conversão.</p>
+<br>
+<p><b>📅 Meses no Gap — 35%</b><br>Percentil pelo tempo consecutivo que a conta está no gap sem cobrança. Mais meses = padrão mais consolidado de uso = maior facilidade de argumentação de valor.</p>
+<br>
+<p><b>⚡ Execuções (Mai/26) — 25%</b><br>Percentil pelo volume de execuções no mês de referência. Mais execuções = dependência maior do produto = menor resistência à cobrança.</p>
+<br>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0">
+  <tr style="background:#dcfce7"><td style="padding:6px 10px"><b style="color:#059669">🟢 Alta Prioridade</b></td><td style="padding:6px 10px">Score ≥ 70 — abordagem imediata</td></tr>
+  <tr style="background:#fef9c3"><td style="padding:6px 10px"><b style="color:#d97706">🟡 Média Prioridade</b></td><td style="padding:6px 10px">Score 40–69 — fila secundária de CS</td></tr>
+  <tr style="background:#fee2e2"><td style="padding:6px 10px"><b style="color:#dc2626">🔴 Baixa Prioridade</b></td><td style="padding:6px 10px">Score < 40 — conversão menos atrativa agora</td></tr>
+</table>`;
+
+INFO_MODAL['ttfv-analise'] = `
+<p><b>TTFV (Time To First Value)</b> = dias entre a criação da primeira regra de automação e o primeiro disparo de execução.</p>
+<br>
+<p>É o indicador central de eficiência do onboarding — mede quanto tempo a conta leva para extrair valor real do produto, não apenas configurá-lo.</p>
+<br>
+<p><b>Por que a janela do Dia 0 importa:</b> contas que executam no mesmo dia que configuram têm probabilidade muito maior de se tornarem usuárias ativas. O momentum de implementação cai rapidamente após os primeiros dias.</p>
+<br>
+<p><b>Contas sem TTFV:</b> criaram regras mas nunca dispararam nenhuma execução — representam falha total de ativação. São o maior grupo de perda no funil.</p>`;
+
+INFO_MODAL['gap-metodologia'] = `
+<p>O <b>Gap de Cobrança</b> identifica contas que consomem o produto de forma ativa mas não possuem MRR registrado — uso sem receita.</p>
+<br>
+<p><b>Critério de inclusão:</b> conta com média ≥ 50 execuções/mês nos últimos 3 meses e sem MRR ativo no produto Automações em Mai/26.</p>
+<br>
+<p><b>MRR potencial:</b> calculado aplicando a tabela de preços vigente ao tier correspondente ao volume médio de execuções da conta.</p>
+<br>
+<p><b>Custo absorvido:</b> R$0,00195867 por execução × volume mensal. Representa o custo operacional que a Qive assume sem receita em contrapartida.</p>
+<br>
+<p><b>Possíveis causas do Gap:</b></p>
+<p>① Automações incluídas no plano base Qive por contrato específico</p>
+<p>② Falha no processo de billing após o produto sair do período gratuito</p>
+<p>③ Gap no pipeline de dados — conta cobrada fora do sistema de MRR analisado</p>`;
+
+INFO_MODAL['simulador-metodologia'] = `
+<p>O <b>Simulador de Receita</b> projeta o impacto em MRR ao ativar os dois principais vetores de crescimento do produto.</p>
+<br>
+<p><b>Vetor 1 — Regularização do Gap:</b><br>Aplica conversão ao % selecionado das contas no Gap, ordenadas pelo Score CS (maior prioridade primeiro). O MRR adicional usa o tier correspondente ao volume médio de cada conta.</p>
+<br>
+<p><b>Vetor 2 — Ativação de Novos Usuários:</b><br>Estima o MRR de X novas contas que têm automações criadas mas ainda não executaram, assumindo conversão para o tier base (51–200 execuções/mês).</p>
+<br>
+<p><b>Limitações:</b> o simulador usa dados de Mai/26 como base e não considera churn futuro, sazonalidade ou variação de tier após conversão. É uma estimativa de potencial, não uma projeção financeira.</p>`;
+
+INFO_MODAL['regras-analise'] = `
+<p>A <b>Análise de Regras</b> examina como as contas configuram e mantêm suas automações ao longo do tempo.</p>
+<br>
+<p><b>Regra ativa:</b> teve ao menos 1 execução disparada em Mai/26.</p>
+<p><b>Regra inativa:</b> cadastrada mas sem nenhuma execução no mês de referência — pode estar pausada, com erro de configuração ou abandonada.</p>
+<br>
+<p><b>Por que a correlação regras × execuções importa:</b> contas com mais regras ativas tendem a executar volumes maiores, gerando mais dependência do produto e menor risco de churn. É o indicador de profundidade de adoção mais direto disponível.</p>
+<br>
+<p><b>Taxa de inativação por segmento:</b> segmentos com inativação alta podem indicar dificuldade de manutenção das regras ou automações criadas por impulso sem uso continuado.</p>`;
+
+INFO_MODAL['expansao-metodologia'] = `
+<p>A aba <b>Expansão</b> identifica contas já pagantes que ultrapassaram consistentemente o limite do tier contratado — oportunidade de upgrade sem fricção de conversão.</p>
+<br>
+<p><b>Critério:</b> média de execuções dos últimos 6 meses (Dez/25–Mai/26) superior ao limite máximo do tier atual.</p>
+<br>
+<p><b>MRR adicional:</b> diferença entre o MRR do tier imediatamente superior e o MRR atual da conta. Não assume salto de dois tiers.</p>
+<br>
+<p><b>% de Overflow:</b> quanto a conta excede seu limite. Ex: limite 1.000 exec., média 1.851 exec. → overflow de 85,1%. Overflow alto indica urgência maior de abordagem.</p>
+<br>
+<p><b>Nota:</b> contas com MRR adicional negativo (1 conta, tier 51–200) já pagam mais que o tier sugerido — possível contrato diferenciado.</p>`;
+
+INFO_MODAL['gdp-potencial'] = `
+<p>O <b>Potencial GdP</b> cruza as 1.297 contas ativas de Gestão de Pagamentos com o funil de adoção de Automações, revelando o tamanho da oportunidade de cross-sell.</p>
+<br>
+<p><b>Funil de adoção — 4 estágios:</b></p>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0">
+  <tr style="background:#dcfce7"><td style="padding:6px 10px"><b style="color:#059669">✅ Já paga Automações</b></td><td style="padding:6px 10px">61 contas — conversão já realizada (4,7%)</td></tr>
+  <tr style="background:#fee2e2"><td style="padding:6px 10px"><b style="color:#dc2626">⚡ GAP — usa/não paga</b></td><td style="padding:6px 10px">167 contas — usam ativamente sem cobrança</td></tr>
+  <tr style="background:#fef9c3"><td style="padding:6px 10px"><b style="color:#d97706">🔧 Criou mas não usa</b></td><td style="padding:6px 10px">53 contas — configuraram mas pararam de executar</td></tr>
+  <tr style="background:#f3f4f6"><td style="padding:6px 10px"><b style="color:#6b7280">⬜ Nunca ativou</b></td><td style="padding:6px 10px">1.035 contas — maior oportunidade de ativação</td></tr>
+</table>
+<p style="margin-top:8px;font-size:11px;color:#6b7280">A lógica de cross-sell de GdP → Automações se baseia na natureza complementar dos produtos: fluxos de pagamento recorrentes são automatizáveis, e contas que gerenciam pagamentos têm casos de uso naturais para automações.</p>`;
+
+// ── JS functions ─────────────────────────────────────────────
+const _autoTip = document.getElementById('auto-tooltip');
+function showTip(el, txt) {
+  _autoTip.innerHTML = txt; _autoTip.style.display = 'block';
+  const r = el.getBoundingClientRect();
+  let l = r.right + 8, t = r.top + r.height/2 - _autoTip.offsetHeight/2;
+  if(l + _autoTip.offsetWidth > window.innerWidth - 8) l = r.left - _autoTip.offsetWidth - 8;
+  if(t < 8) t = 8;
+  if(t + _autoTip.offsetHeight > window.innerHeight - 8) t = window.innerHeight - _autoTip.offsetHeight - 8;
+  _autoTip.style.left = l+'px'; _autoTip.style.top = t+'px';
+}
+function hideTip() { _autoTip.style.display = 'none'; }
+
+const INFO_MODAL_TITLES = {
+  'quadrant-def':'Definição dos Quadrantes',
+  'score-cs-modelo':'Modelo do Score CS',
+  'ttfv-analise':'TTFV — Time To First Value',
+  'gap-metodologia':'Metodologia — Gap de Cobrança',
+  'simulador-metodologia':'Simulador — Como é calculado',
+  'regras-analise':'Análise de Regras — Metodologia',
+  'expansao-metodologia':'Expansão — Critérios e Cálculo',
+  'gdp-potencial':'Potencial GdP — Metodologia do Funil',
+};
+function showAutoInfo(key) {
+  document.getElementById('auto-info-title').textContent = INFO_MODAL_TITLES[key] || key;
+  document.getElementById('auto-info-body').innerHTML = INFO_MODAL[key] || '';
+  document.getElementById('auto-info-modal').classList.add('open');
+}
+function closeAutoInfo() { document.getElementById('auto-info-modal').classList.remove('open'); }
+document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeAutoInfo(); });
+
 </script>
 
 </body>
