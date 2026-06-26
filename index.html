@@ -32,6 +32,7 @@ header span { font-size: 12px; opacity: 0.5; }
 
 /* KPI GRID */
 .kpi-row { display: grid; gap: 14px; margin: 16px 0; }
+.kpi-row-3 { grid-template-columns: repeat(3, 1fr); }
 .kpi-row-4 { grid-template-columns: repeat(4, 1fr); }
 .kpi-row-5 { grid-template-columns: repeat(5, 1fr); }
 .kpi-auto { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); }
@@ -120,7 +121,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
   .grid-2, .grid-3 { grid-template-columns: 1fr; }
   .chart-card.wide2 { grid-column: span 1; }
-  .kpi-row-4, .kpi-row-5 { grid-template-columns: repeat(2, 1fr); }
+  .kpi-row-3, .kpi-row-4, .kpi-row-5 { grid-template-columns: repeat(2, 1fr); }
   .alerts-grid { grid-template-columns: 1fr; }
 
   .funnel-stages { gap: 0; }
@@ -131,7 +132,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 @media (max-width: 600px) {
   header h1 { font-size: 15px; }
   .section-btn { padding: 10px 12px; font-size: 11px; }
-  .kpi-row-4, .kpi-row-5, .kpi-auto { grid-template-columns: repeat(2, 1fr); }
+  .kpi-row-3, .kpi-row-4, .kpi-row-5, .kpi-auto { grid-template-columns: repeat(2, 1fr); }
   .kpi-value { font-size: 22px; }
   .funnel-bar-wrap { height: 100px; }
   .funnel-val { font-size: 12px; top: -22px; }
@@ -1228,13 +1229,6 @@ tbody td { padding: 9px 16px; color: #374151; }
 
 <!-- ═══════════════ EXPANSÃO ═══════════════ -->
 <div id="section-expansao" class="panel">
-  <div class="tabs" id="exp-tabs">
-    <button class="tab active" onclick="expSetSeg('Todos',this)">Todos</button>
-    <button class="tab" onclick="expSetSeg('Velocity',this)">Velocity</button>
-    <button class="tab" onclick="expSetSeg('Mid',this)">Mid Market</button>
-    <button class="tab" onclick="expSetSeg('Enterprise',this)">Enterprise</button>
-    <button class="tab" onclick="expSetSeg('Contador',this)">Contador</button>
-  </div>
   <div class="content">
 
     <!-- KPIs -->
@@ -1272,12 +1266,22 @@ tbody td { padding: 9px 16px; color: #374151; }
 
     <!-- Table -->
     <div class="chart-card" style="padding:0;overflow:hidden">
-      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid #f3f4f6">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 12px;border-bottom:1px solid #f3f4f6;flex-wrap:wrap;gap:10px">
         <div>
           <div class="chart-title" style="margin-bottom:2px">Contas em Overflow <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-overflow-contas'])" onmouseleave="hideTip()">ℹ</i></div>
           <div class="chart-sub">Contas pagantes que ultrapassaram o limite do tier contratado · Média últimos 6 meses</div>
         </div>
-        <span id="exp-page-info" style="font-size:12px;color:#9ca3af;white-space:nowrap"></span>
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap">
+          <span style="font-size:11px;color:#9ca3af;font-weight:500;text-transform:uppercase;letter-spacing:.05em">Segmento:</span>
+          <div id="exp-seg-filters" style="display:flex;gap:6px;flex-wrap:wrap">
+            <button class="filter-btn active" onclick="expSetSeg('Todos',this)">Todos</button>
+            <button class="filter-btn" onclick="expSetSeg('Velocity',this)">Velocity</button>
+            <button class="filter-btn" onclick="expSetSeg('Mid',this)">Mid Market</button>
+            <button class="filter-btn" onclick="expSetSeg('Enterprise',this)">Enterprise</button>
+            <button class="filter-btn" onclick="expSetSeg('Contador',this)">Contador</button>
+          </div>
+          <span id="exp-page-info" style="font-size:12px;color:#9ca3af;white-space:nowrap;margin-left:4px"></span>
+        </div>
       </div>
       <div style="overflow-x:auto">
         <table style="width:100%;border-collapse:collapse">
@@ -3156,7 +3160,7 @@ function expFilteredRows() {
 window.expSetSeg = function(seg, btn) {
   expSegFilter = seg;
   expPage = 1;
-  document.querySelectorAll('#exp-tabs .tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('#exp-seg-filters .filter-btn').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
   renderExpTable();
 };
