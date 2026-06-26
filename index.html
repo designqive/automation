@@ -1675,7 +1675,9 @@ tbody td { padding: 9px 16px; color: #374151; }
               <th onclick="contasSort('x')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">Exec. Mai <span id="sort-x"></span></th>
               <th onclick="contasSort('t')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">TTFV <span id="sort-t"></span></th>
               <th onclick="contasSort('m')" style="padding:10px 12px;text-align:right;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em;cursor:pointer;white-space:nowrap">MRR Auto <span id="sort-m"></span></th>
-              <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">6 meses</th>
+              <th style="padding:10px 12px;text-align:center;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">
+                USO <span title="Histórico de execuções dos últimos 6 meses (Dez/25–Mai/26). Cada ponto representa um mês: ⚪ Inativo · 🟡 Baixo (1–99) · 🟠 Médio (100–999) · 🔴 Alto (1.000+)" style="font-size:10px;color:#9ca3af;cursor:help;font-weight:400;text-transform:none;letter-spacing:0">ⓘ</span>
+              </th>
               <th style="padding:10px 12px;text-align:left;font-size:11px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.05em">Ação sugerida</th>
             </tr>
           </thead>
@@ -4340,9 +4342,11 @@ function contasRender() {
     const s=cfg[a]||{bg:'#f1f5f9',c:'#6b7280'};
     return `<span style="background:${s.bg};color:${s.c};padding:2px 7px;border-radius:4px;font-size:10px;font-weight:600;white-space:nowrap">${a}</span>`;
   };
-  const dotColors = ['#e5e7eb','#fed7aa','#f97316','#ea580c'];
-  const sparkline = d => d.split('').map(v=>
-    `<span style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColors[+v]};margin:0 1px"></span>`
+  const dotColors = ['#e5e7eb','#fed7aa','#f97316','#dc2626'];
+  const dotLabels = ['Inativo','Baixo (1–99)','Médio (100–999)','Alto (1.000+)'];
+  const SPARK_MONTHS = ['Dez/25','Jan/26','Fev/26','Mar/26','Abr/26','Mai/26'];
+  const sparkline = d => d.split('').map((v,i)=>
+    `<span title="${SPARK_MONTHS[i]}: ${dotLabels[+v]}" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColors[+v]};margin:0 1px;cursor:default"></span>`
   ).join('');
   const tendColor = t => t==='↑'?'#059669':t==='↓'?'#dc2626':'#9ca3af';
 
