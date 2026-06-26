@@ -2033,11 +2033,11 @@ window.addEventListener('DOMContentLoaded', ()=>{
       [0,0,0,0,0,0,0,0,792,843.79,843.79,843.79,0,0,0,0,0],
       [0,0,0,0,0,0,0,0,0,0,792,792,792,792,792,792,792]
     ],
-    qMrr:[{q:'Champion',contas:284,mrr:26145.74,arpa:92.06,color:'#6B21A8'},{q:'Dependente',contas:113,mrr:7452.06,arpa:65.95,color:'#9333ea'},{q:'Sem Uso',contas:82,mrr:5791.89,arpa:70.63,color:'#9ca3af'},{q:'Explorador',contas:65,mrr:1700.47,arpa:26.16,color:'#c4b5fd'},{q:'Em Risco',contas:41,mrr:1231.12,arpa:30.03]
+    qMrr:[{q:'Champion',contas:284,mrr:26145.74,arpa:92.06,color:'#6B21A8'},{q:'Dependente',contas:113,mrr:7452.06,arpa:65.95,color:'#9333ea'},{q:'Sem Uso',contas:82,mrr:5791.89,arpa:70.63,color:'#9ca3af'},{q:'Explorador',contas:65,mrr:1700.47,arpa:26.16,color:'#c4b5fd'},{q:'Em Risco',contas:41,mrr:1231.12,arpa:30.03,color:'#dc2626'}]
   };
 
   // MRR trend
-  const recMrrLabels = REC.months.map((m,i)=>i===17?m+' *':m);
+  const recMrrLabels = REC.months;
   new Chart(document.getElementById('rec-mrr'), {
     type:'line',
     data:{
