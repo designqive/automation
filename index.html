@@ -289,7 +289,7 @@ tbody td { padding: 9px 16px; color: #374151; }
 
 <div class="section-bar">
   <button class="section-btn active" onclick="switchSection('exec',this)">Sumário Executivo</button>
-  <button class="section-btn" onclick="switchSection('funil',this)">Adoção <i class="info-icon sm" onmouseenter="showTip(this,INFO['adocao'])" onmouseleave="hideTip()">ℹ</i></button>
+  <button class="section-btn" onclick="switchSection('funil',this)">Adoção</button>
   <button class="section-btn" onclick="switchSection('eng',this)">Engajamento</button>
   <button class="section-btn" onclick="switchSection('receita',this)">Receita</button>
   <button class="section-btn" onclick="switchSection('expansao',this)">Expansão</button>
@@ -451,7 +451,11 @@ tbody td { padding: 9px 16px; color: #374151; }
     <button class="tab" onclick="showFunilSeg('Contador',this)">Contador</button>
   </div>
   <div class="content">
-    <div id="funil-funnel-render"></div>
+    <div class="chart-card" style="margin-bottom:16px">
+      <div class="chart-title">Funil de Adoção <i class="info-icon" onclick="showAutoInfo('funil-def')">ℹ</i></div>
+      <div class="chart-sub">Jornada de adoção do portfólio Qive · Referência: Mai/2026</div>
+      <div id="funil-funnel-render" style="margin-top:12px"></div>
+    </div>
 
     <div class="charts-grid grid-2">
       <div class="chart-card">
@@ -3580,9 +3584,9 @@ document.addEventListener('keydown', function(e) {
 const INFO = {
   // ── Sumário Executivo ──────────────────────────────────────
   'portfolio-qive':'Total de contas únicas com ao menos 1 regra cadastrada no produto Automações — independente de pagamento ou uso ativo.',
-  'interesse':'Contas que criaram ao menos 1 regra de automação — demonstraram intenção de uso, mas podem não ter executado nenhuma ação ainda.',
-  'ativacao':'Contas que dispararam ao menos 1 execução de automação — ultrapassaram a barreira de configuração e viram valor real no produto.',
-  'adocao':'Contas com execuções ativas em Mai/26 — usam o produto de forma recorrente no mês de referência.',
+  'interesse':'Contas que acessaram o módulo de Automações — demonstraram interesse no produto, independente de ter criado ou executado qualquer regra.',
+  'ativacao':'Contas que criaram ao menos 1 regra de automação — saíram da fase de interesse e configuraram o produto para uso.',
+  'adocao':'Contas com ao menos 1 regra que disparou ações — criaram regras que estão gerando execuções reais, extraindo valor ativo do produto.',
   'maa':'MAA (Monthly Active Accounts): contas com ao menos 1 execução de automação em Mai/26. Métrica principal de engajamento ativo.',
   'execucoes':'Total de execuções de automações disparadas por contas ativas em Mai/26. Reflete o volume de uso do produto.',
   'ttfv-median':'TTFV (Time To First Value) mediano: tempo em dias entre o cadastro da conta e a primeira execução de automação. Indica a velocidade de ativação do produto.',
@@ -3670,6 +3674,18 @@ const INFO = {
 };
 
 const INFO_MODAL = {};
+
+INFO_MODAL['funil-def'] = `
+<p>O funil classifica cada conta do portfólio Qive em 4 etapas progressivas de adoção do produto Automações:</p>
+<br>
+<table style="width:100%;border-collapse:collapse;font-size:12px;margin:8px 0">
+  <tr style="background:#f3f4f6"><td style="padding:8px 10px"><b style="color:#1a1a2e">🏢 Portfólio Qive</b></td><td style="padding:8px 10px">Total de contas únicas da base Qive — ponto de partida do funil</td></tr>
+  <tr><td style="padding:8px 10px"><b style="color:#1d4ed8">👀 Interesse</b></td><td style="padding:8px 10px">Acessaram o módulo de Automações ao menos uma vez — demonstraram interesse</td></tr>
+  <tr style="background:#f3f4f6"><td style="padding:8px 10px"><b style="color:#d97706">⚙️ Ativação</b></td><td style="padding:8px 10px">Criaram ao menos 1 regra de automação — saíram da exploração para a configuração</td></tr>
+  <tr><td style="padding:8px 10px"><b style="color:#16a34a">✅ Adoção</b></td><td style="padding:8px 10px">Têm regras com ações disparando — uso real e recorrente do produto</td></tr>
+</table>
+<br>
+<p>As conversões entre etapas revelam os principais gargalos: a maior perda está entre <b>Portfólio → Interesse</b> (contas que nunca acessaram o módulo) e entre <b>Interesse → Ativação</b> (contas que acessaram mas nunca criaram uma regra).</p>`;
 
 INFO_MODAL['quadrant-def'] = `
 <p>O Mapa de Quadrante classifica as contas pagantes em 4 perfis com base em dois eixos independentes:</p>
@@ -3778,6 +3794,7 @@ function showTip(el, txt) {
 function hideTip() { _autoTip.style.display = 'none'; }
 
 const INFO_MODAL_TITLES = {
+  'funil-def':'Funil de Adoção — Definição das Etapas',
   'quadrant-def':'Definição dos Quadrantes',
   'score-cs-modelo':'Modelo do Score CS',
   'ttfv-analise':'TTFV — Time To First Value',
