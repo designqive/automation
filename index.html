@@ -347,8 +347,8 @@ tbody td { padding: 9px 16px; color: #374151; }
 <header>
   <h1>Automações · Performance</h1>
   <div style="display:flex;align-items:center;gap:12px">
-    <span style="font-size:13px;opacity:.7">Jan/2025 – Mai/2026</span>
-    <button class="version-badge" onclick="openChangelog()">v2.4</button>
+    <span style="font-size:13px;opacity:.7">Jan/2025 – Jul/2026</span>
+    <button class="version-badge" onclick="openChangelog()">v2.5</button>
     <button class="strat-btn" onclick="openStrat()">🎯 Estratégia</button>
   </div>
 </header>
@@ -676,7 +676,7 @@ tbody td { padding: 9px 16px; color: #374151; }
   <div class="content">
     <div class="chart-card" style="margin-bottom:16px">
       <div class="chart-title">Funil de Adoção <i class="info-icon" onclick="showAutoInfo('funil-def')">ℹ</i></div>
-      <div class="chart-sub">Jornada de adoção do portfólio Qive · Referência: Mai/2026</div>
+      <div class="chart-sub">Jornada de adoção do portfólio Qive · Referência: Jul/2026</div>
       <div id="funil-funnel-render" style="margin-top:12px"></div>
     </div>
 
@@ -1476,7 +1476,7 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
       <div class="chart-card">
         <div class="chart-title">MRR Potencial por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['exp-seg-chart'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="chart-sub">Receita adicional estimada por segmento · Mai/2026</div>
+        <div class="chart-sub">Receita adicional estimada por segmento · Jul/2026</div>
         <canvas id="exp-seg-chart" style="max-height:220px"></canvas>
       </div>
       <div class="chart-card">
@@ -1613,12 +1613,12 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px">
       <div class="chart-card">
         <div class="chart-title">Funil de Adoção — Base GdP <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-ativos'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="chart-sub">Jornada de adoção de Automações dentro dos 1.297 assinantes ativos GdP · Mai/2026</div>
+        <div class="chart-sub">Jornada de adoção de Automações dentro dos 1.297 assinantes ativos GdP · Jul/2026</div>
         <canvas id="gdp-funnel-chart" style="max-height:220px"></canvas>
       </div>
       <div class="chart-card">
         <div class="chart-title">GAP por Segmento <i class="info-icon sm" onmouseenter="showTip(this,INFO['gdp-gap'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="chart-sub">Contas usando Automações sem cobrança, por segmento · Mai/2026</div>
+        <div class="chart-sub">Contas usando Automações sem cobrança, por segmento · Jul/2026</div>
         <canvas id="gdp-seg-chart" style="max-height:220px"></canvas>
       </div>
     </div>
@@ -1701,7 +1701,7 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:12px">
       <div>
         <div style="font-size:17px;font-weight:700;color:#1a1a2e">Visão por Conta</div>
-        <div style="font-size:12px;color:#9ca3af;margin-top:2px">7.440 contas com sinal de atividade · Mai/2026 · use os filtros para montar sua lista de trabalho</div>
+        <div style="font-size:12px;color:#9ca3af;margin-top:2px">7.604 contas com sinal de atividade · Jul/2026 · use os filtros para montar sua lista de trabalho</div>
       </div>
       <div style="display:flex;align-items:center;gap:10px">
         <input id="contas-search" type="text" placeholder="Buscar por ID da conta…" oninput="contasRender()"
@@ -1883,6 +1883,21 @@ tbody td { padding: 9px 16px; color: #374151; }
       <button class="changelog-close" onclick="closeChangelog()">✕</button>
     </div>
     <div class="changelog-body">
+
+      <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v2.5</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">25/08/2026</span><span class="cl-author">Arthur Silva</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Atualização completa da base para Jul/26 — 7.604 contas processadas com novos CSVs de uso, portfolio, regras e acesso</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Janela do sparkline deslocada para Fev/26–Jul/26; todos os KPIs de referência atualizados para Jul/26</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>MRR cresceu de R$42,3k (Jul/26) para R$61,9k (+46%); pagantes sobem de 585 para 703; ARPA de R$72 para R$88</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Gap de cobrança reduziu de 518 para 456 contas — melhora na conversão de elegíveis para pagantes (44,9% → 53,7%)</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Novo indicador: Taxa de Adoção Real (11,1% do portfólio) com benchmark de mercado 20–40% para Automation/Workflow SaaS — referência citada com links</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Definições de métricas corrigidas: adoção medida sobre portfólio total (14.291); split elegíveis pagantes vs gap; base free como adotantes com exec ≤ 50</div>
+          </div>
+        </div>
+      </div>
 
       <div class="cl-entry">
         <div class="cl-version-col"><span class="cl-vbadge">v2.4</span><div class="cl-line"></div></div>
