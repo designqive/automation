@@ -348,7 +348,7 @@ tbody td { padding: 9px 16px; color: #374151; }
   <h1>Automações · Performance</h1>
   <div style="display:flex;align-items:center;gap:12px">
     <span style="font-size:13px;opacity:.7">Jan/2025 – Jul/2026</span>
-    <button class="version-badge" onclick="openChangelog()">v2.5</button>
+    <button class="version-badge" onclick="openChangelog()">v2.6</button>
     <button class="strat-btn" onclick="openStrat()">🎯 Estratégia</button>
   </div>
 </header>
@@ -775,27 +775,27 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="kpi-row kpi-row-5" style="margin-bottom:20px">
       <div class="kpi" style="border-left:4px solid #1d4ed8">
         <div class="kpi-label">MAA (Jul/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['maa-eng'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-maa">1.545</div>
+        <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-maa">1.596</div>
         <div class="kpi-sub">contas com ações no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #1d4ed8">
         <div class="kpi-label">Execuções (Jul/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['exec-eng'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-exec">3,2M</div>
+        <div class="kpi-value" style="color:#1d4ed8" id="eng-kpi-exec">3,5M</div>
         <div class="kpi-sub">ações disparadas no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
         <div class="kpi-label">Regras Ativas (Jul/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['regras-ativas-eng'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="kpi-value" style="color:#16a34a" id="eng-kpi-regras">6.485</div>
+        <div class="kpi-value" style="color:#16a34a" id="eng-kpi-regras">6.813</div>
         <div class="kpi-sub">dispararam ações no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #16a34a">
         <div class="kpi-label">Média Exec/Conta (Jul/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['media-exec-conta'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="kpi-value" style="color:#16a34a" id="eng-kpi-avg">2.099</div>
+        <div class="kpi-value" style="color:#16a34a" id="eng-kpi-avg">2.176</div>
         <div class="kpi-sub">exec ÷ MAA no mês</div>
       </div>
       <div class="kpi" style="border-left:4px solid #d97706">
         <div class="kpi-label">Novas Adoções (Jul/26) <i class="info-icon sm" onmouseenter="showTip(this,INFO['novas-adocoes'])" onmouseleave="hideTip()">ℹ</i></div>
-        <div class="kpi-value" style="color:#d97706" id="eng-kpi-novas">50</div>
+        <div class="kpi-value" style="color:#d97706" id="eng-kpi-novas">54</div>
         <div class="kpi-sub">1ª ação disparada no mês</div>
       </div>
     </div>
@@ -1441,7 +1441,7 @@ tbody td { padding: 9px 16px; color: #374151; }
       <div class="chart-title">Evolução Mensal — Criação de Regras <i class="info-icon" onclick="showAutoInfo('regras-analise')">ℹ</i></div>
       <div class="chart-sub">Regras criadas e contas únicas que criaram ao menos uma regra no mês · Jan/25–Jul/26</div>
       <div class="insight-note" style="margin-top:8px;margin-bottom:12px">
-        <strong>⚠️ Fev/26:</strong> spike de 1.134 regras criadas — 2 contas respondem por 671 (59% do mês). Desconsiderando essas contas, o mês seria de ~463 regras, em linha com a tendência.
+        <strong>⚠️ Fev/26:</strong> spike de 1.126 regras criadas — 2 contas respondem por 671 (60% do mês). Desconsiderando essas contas, o mês seria de ~455 regras, em linha com a tendência.
       </div>
       <canvas id="reg-evol" style="max-height:220px"></canvas>
     </div>
@@ -1885,6 +1885,18 @@ tbody td { padding: 9px 16px; color: #374151; }
     <div class="changelog-body">
 
       <div class="cl-entry">
+        <div class="cl-version-col"><span class="cl-vbadge">v2.6</span><div class="cl-line"></div></div>
+        <div class="cl-content">
+          <div class="cl-meta"><span class="cl-date">25/08/2026</span><span class="cl-author">Pedro Finamore (via Claude)</span></div>
+          <div class="cl-changes">
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Engajamento e Análise de Regras recalculados a partir de novos extracts de automacoes_uso e automacoes_regras — corrigida a lacuna que pulava Mai/26 e Jun/26 nas séries mensais (MAA, execuções, regras, novas contas e evolução de regras criadas)</div>
+            <div class="cl-change"><span class="cl-tag dados">Dados</span>Snapshot de regras ativas/inativas por segmento e distribuição de regras por conta atualizados para o extract de hoje (25/08)</div>
+            <div class="cl-change"><span class="cl-tag analise">Análise</span>Demais abas (Receita, GAP de Cobrança, Expansão, Score CS, Simulador, Visão por Conta) não foram alteradas nesta atualização — dependem de dados de billing/tier que não foram fornecidos</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cl-entry">
         <div class="cl-version-col"><span class="cl-vbadge">v2.5</span><div class="cl-line"></div></div>
         <div class="cl-content">
           <div class="cl-meta"><span class="cl-date">25/08/2026</span><span class="cl-author">Arthur Silva</span></div>
@@ -2130,31 +2142,29 @@ const TTFV = {
 };
 
 const ENG = {
-  meses: ["Jan/25","Fev/25","Mar/25","Abr/25","Mai/25","Jun/25","Jul/25","Ago/25","Set/25","Out/25","Nov/25","Dez/25","Jan/26","Fev/26","Mar/26","Abr/26","Jul/26"],
-  maa:   [951,984,1002,1040,1084,1141,1193,1237,1266,1326,1348,1360,1396,1462,1493,1530,1545],
-  exec:  [1138294,1086148,1191458,1177713,1313282,1286796,1487536,1631659,1766828,2239119,2943209,2466302,2514631,2428069,3080871,3172767,3243895],
-  regras:[3797,3896,3890,4072,4218,4330,4590,4703,4821,5054,5162,5140,5493,5931,6362,6575,6485],
-  novas: [0,52,47,43,51,71,62,60,60,68,45,34,53,59,48,50,50]
+  meses: ["Jan/25", "Fev/25", "Mar/25", "Abr/25", "Mai/25", "Jun/25", "Jul/25", "Ago/25", "Set/25", "Out/25", "Nov/25", "Dez/25", "Jan/26", "Fev/26", "Mar/26", "Abr/26", "Mai/26", "Jun/26", "Jul/26"],
+  maa:   [923, 953, 971, 1007, 1052, 1105, 1155, 1199, 1229, 1292, 1314, 1323, 1359, 1428, 1459, 1493, 1513, 1559, 1596],
+  exec:  [1054203, 1005567, 1102182, 1091007, 1225009, 1205119, 1403285, 1535705, 1702398, 2210337, 2916483, 2442146, 2498682, 2412525, 3064454, 3166607, 3278274, 3540043, 3473736],
+  regras:[3725, 3819, 3815, 3993, 4140, 4257, 4509, 4620, 4743, 4981, 5086, 5059, 5407, 5847, 6272, 6483, 6446, 6528, 6813],
+  novas: [0, 49, 43, 41, 49, 68, 61, 58, 58, 69, 44, 34, 52, 58, 46, 48, 48, 59, 54]
 };
-const ENG_SEG = {"Velocity": {"maa": [683, 707, 717, 748, 779, 815, 850, 872, 894, 938, 953, 957, 974, 1024, 1041, 1061, 1083], "exec": [475092, 463773, 491593, 514269, 548448, 536506, 619087, 631406, 621192, 1049825, 1604260, 1254088, 1278940, 1218787, 1528138, 1584004, 1526415], "regras": [2418, 2483, 2504, 2626, 2730, 2769, 2902, 2958, 3030, 3218, 3233, 3123, 3400, 3674, 3895, 4070, 3998], "novas": [0, 38, 30, 35, 33, 47, 35, 35, 39, 50, 29, 22, 35, 42, 26, 34, 41]}, "Mid Market": {"maa": [97, 101, 103, 106, 108, 118, 120, 130, 132, 140, 142, 147, 155, 163, 166, 180, 172], "exec": [59080, 62325, 67478, 67004, 73797, 84520, 99662, 99299, 102822, 105010, 99910, 93740, 96049, 100056, 153686, 175979, 209023], "regras": [273, 284, 286, 306, 330, 372, 411, 423, 441, 474, 500, 543, 589, 597, 639, 666, 650], "novas": [0, 5, 7, 2, 4, 9, 6, 10, 6, 10, 5, 6, 9, 7, 7, 9, 3]}, "Enterprise": {"maa": [101, 106, 107, 109, 120, 130, 142, 142, 145, 151, 156, 159, 165, 171, 180, 179, 185], "exec": [565462, 523030, 579531, 562311, 638954, 633031, 718844, 756877, 795587, 816186, 803697, 715565, 721412, 659368, 869874, 851121, 870348], "regras": [875, 896, 866, 890, 907, 939, 998, 1010, 1026, 1034, 1099, 1133, 1148, 1285, 1447, 1450, 1456], "novas": [0, 5, 3, 4, 10, 14, 15, 6, 7, 5, 8, 5, 6, 4, 8, 3, 5]}, "Contador": {"maa": [65, 64, 70, 72, 72, 73, 76, 88, 88, 90, 90, 91, 95, 97, 99, 104, 99], "exec": [38240, 36288, 52250, 33448, 51564, 32305, 49223, 143490, 246665, 267483, 434763, 402382, 417701, 448554, 527617, 558651, 634429], "regras": [221, 218, 219, 235, 236, 234, 265, 295, 307, 309, 313, 324, 332, 348, 354, 361, 349], "novas": [0, 3, 7, 2, 4, 1, 6, 9, 7, 3, 3, 1, 3, 6, 7, 4, 1]}};
-
-;
+const ENG_SEG = {"Velocity": {"maa": [674, 696, 702, 733, 766, 795, 827, 852, 878, 923, 938, 939, 958, 1009, 1026, 1043, 1064, 1073, 1103], "exec": [406904, 400308, 419485, 444898, 477892, 474066, 554420, 555937, 582498, 1041840, 1595761, 1243238, 1269612, 1208382, 1521039, 1587385, 1545644, 1641248, 1586058], "regras": [2246, 2310, 2335, 2456, 2568, 2621, 2748, 2820, 2901, 3094, 3103, 2993, 3271, 3537, 3760, 3936, 3887, 3802, 4004], "novas": [0, 37, 25, 33, 33, 43, 35, 34, 41, 51, 28, 22, 34, 40, 25, 32, 38, 26, 39]}, "Mid Market": {"maa": [94, 98, 101, 103, 106, 115, 119, 129, 129, 138, 140, 145, 151, 159, 163, 177, 171, 191, 196], "exec": [51964, 54255, 59164, 58256, 64327, 75357, 91232, 91816, 94422, 98561, 94721, 89317, 90028, 95913, 147001, 169517, 203664, 200207, 221107], "regras": [262, 273, 277, 295, 320, 361, 397, 408, 421, 457, 482, 526, 570, 582, 625, 650, 640, 706, 722], "novas": [0, 5, 7, 2, 4, 8, 6, 10, 5, 10, 5, 6, 9, 7, 7, 9, 4, 14, 8]}, "Enterprise": {"maa": [98, 103, 104, 106, 116, 128, 139, 139, 142, 148, 153, 156, 162, 168, 177, 176, 182, 190, 190], "exec": [560387, 517824, 573997, 557168, 633749, 626283, 711777, 747450, 782256, 807372, 796234, 711470, 723787, 661194, 870811, 852278, 875803, 868366, 791820], "regras": [1013, 1034, 998, 1023, 1033, 1056, 1113, 1116, 1131, 1137, 1204, 1235, 1250, 1390, 1546, 1550, 1560, 1559, 1577], "novas": [0, 5, 3, 4, 9, 16, 14, 6, 7, 5, 8, 5, 6, 4, 8, 3, 5, 11, 3]}, "Contador": {"maa": [57, 56, 63, 64, 63, 66, 69, 78, 79, 82, 82, 82, 87, 91, 92, 96, 95, 104, 106], "exec": [34948, 33180, 49518, 30634, 48982, 29368, 45811, 140449, 243171, 262505, 429689, 398066, 415208, 447002, 525563, 557414, 653159, 830217, 874747], "regras": [204, 202, 204, 218, 218, 218, 250, 275, 289, 292, 296, 304, 315, 337, 340, 346, 358, 460, 509], "novas": [0, 2, 7, 2, 3, 1, 6, 8, 5, 3, 3, 1, 3, 7, 6, 4, 1, 8, 4]}};
 
 const SEG_COLORS = {Velocity:'#1d4ed8','Mid Market':'#15803d',Enterprise:'#b91c1c',Contador:'#c2410c'};
 
 // ── ANÁLISE DE REGRAS ─────────────────────────────────────
 const REGRAS = {
-  buckets:      ["1 regra","2–5","6–10","11–20","21+"],
-  b_contas:     [826,880,195,101,93],
-  segLabels:    ["Velocity","Mid Market","Enterprise","Contador"],
-  segAtivas:    [7562,923,2275,964],
-  segInativas:  [1500,247,926,79],
-  segPctIn:     [16.6,21.1,28.9,7.6],
-  corrLabels:   ["0 ativas","1 ativa","2–5","6–10","11–20","21–100","100+"],
-  corrMedians:  [17,54,155,218,424,653,1360],
-  evolLabels:   ["Jan/25","Fev/25","Mar/25","Abr/25","Mai/25","Jun/25","Jul/25","Ago/25","Set/25","Out/25","Nov/25","Dez/25","Jan/26","Fev/26","Mar/26","Abr/26","Jul/26"],
-  evolCriadas:  [164,180,535,343,286,411,514,301,357,481,324,230,440,1134,335,249,374],
-  evolContas:   [72,64,66,92,87,125,124,125,116,139,101,85,121,143,125,114,133],
+  buckets:      ["1 regra", "2–5", "6–10", "11–20", "21+"],
+  b_contas:     [824, 932, 208, 111, 98],
+  segLabels:    ["Velocity", "Mid Market", "Enterprise", "Contador"],
+  segAtivas:    [7399, 1003, 2511, 1062],
+  segInativas:  [1780, 285, 1049, 92],
+  segPctIn:     [19.4, 22.1, 29.5, 8.0],
+  corrLabels:   ["0 ativas", "1 ativa", "2–5", "6–10", "11–20", "21–100", "100+"],
+  corrMedians:  [0, 21, 87, 281, 563, 594, 1510],
+  evolLabels:   ["Jan/25", "Fev/25", "Mar/25", "Abr/25", "Mai/25", "Jun/25", "Jul/25", "Ago/25", "Set/25", "Out/25", "Nov/25", "Dez/25", "Jan/26", "Fev/26", "Mar/26", "Abr/26", "Mai/26", "Jun/26", "Jul/26"],
+  evolCriadas:  [162, 179, 535, 336, 274, 397, 503, 291, 356, 479, 322, 230, 425, 1126, 333, 247, 365, 396, 334],
+  evolContas:   [71, 63, 66, 87, 84, 121, 120, 120, 115, 139, 101, 85, 119, 140, 124, 112, 126, 137, 147],
 };
 
 // Dados de consumo por segmento (média mensal vs limite 50 ações)
