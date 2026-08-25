@@ -4699,9 +4699,11 @@ function contasRender() {
   const dotColors = ['#e5e7eb','#fed7aa','#f97316','#dc2626'];
   const dotLabels = ['Inativo','Baixo (1–99)','Médio (100–999)','Alto (1.000+)'];
   const SPARK_MONTHS = ['Mar/26','Abr/26','Mai/26','Jun/26','Jul/26','Ago/26 (parcial)'];
-  const sparkline = d => d.split('').map((v,i)=>
-    `<span onmouseenter="showTip(this,'${SPARK_MONTHS[i]}: <b>${dotLabels[+v]}</b>')" onmouseleave="hideTip()" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColors[+v]};margin:0 1px;cursor:default"></span>`
-  ).join('');
+  const bucketOfExec = v => v === 0 ? 0 : v < 100 ? 1 : v < 1000 ? 2 : 3;
+  const sparkline = mx => (mx || [0,0,0,0,0,0]).map((v,i)=>{
+    const b = bucketOfExec(v);
+    return `<span onmouseenter="showTip(this,'${SPARK_MONTHS[i]}: <b>${dotLabels[b]}</b> (${v.toLocaleString('pt-BR')} exec.)')" onmouseleave="hideTip()" style="display:inline-block;width:9px;height:9px;border-radius:50%;background:${dotColors[b]};margin:0 1px;cursor:default"></span>`;
+  }).join('');
   const tendColor = t => t==='↑'?'#059669':t==='↓'?'#dc2626':'#9ca3af';
 
   let html='';
@@ -4713,7 +4715,7 @@ function contasRender() {
       <td style="padding:8px 12px">${etapaBadge(a.e)}</td>
       <td style="padding:8px 12px;text-align:right;font-size:12px;color:#6b7280">${a.t!=null?a.t+'d':'—'}</td>
       <td style="padding:8px 12px;text-align:right;font-size:12px;color:#374151">${a.ra}<span style="color:#d1d5db">/${a.r}</span></td>
-      <td style="padding:8px 12px;text-align:center;white-space:nowrap">${sparkline(a.d)}</td>
+      <td style="padding:8px 12px;text-align:center;white-space:nowrap">${sparkline(a.mx)}</td>
       <td style="padding:8px 12px">${quadBadge(a.q)}</td>
       <td style="padding:8px 12px;text-align:right;font-size:12px;font-weight:600;color:${a.x>0?'#1a1a2e':'#d1d5db'}">${a.x>0?a.x.toLocaleString('pt-BR'):'—'}</td>
       <td style="padding:8px 12px;text-align:center;font-size:14px;font-weight:700;color:${tendColor(a.td)}">${a.td||'—'}</td>
